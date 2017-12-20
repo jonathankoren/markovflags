@@ -16,44 +16,43 @@ function updateFlag() {
     var stripeMode = "horizontal";
     var stripeColors = document.getElementById("stripeColorCsvId").value.split(",");
     var stripeCorners = document.getElementById("stripeWidthCsvId").value.split(",");
-    drawHorizontalStripes(heightRatio, aspectRatio, stripeColors, stripeCorners);
+    var stripeOrient = document.getElementById("stripeOrientId").value;
+    console.log(stripeOrient);
+    if (stripeOrient == "vert") {
+        drawVerticalStripes(heightRatio, aspectRatio, stripeColors, stripeCorners);
+    } else if (stripeOrient == "diag") {
+
+    } else {
+        drawHorizontalStripes(heightRatio, aspectRatio, stripeColors, stripeCorners);
+    }
 
     var swallowtailPointStart = document.getElementById("swallowtailPointStartId").value;
     var swallowtailCutDepth = document.getElementById("swallowtailCutDepthId").value;
     var swallowtailPointVerticals = document.getElementById("swallowtailPointVerticalsId").value.split(",");
     if (swallowtailPointVerticals[0] === "") {
         swallowtailPointVerticals = stripeCorners;
+        document.getElementById("swallowtailPointVerticalsId").value = stripeCorners;
     }
-    var stripeOrient = document.getElementById("stripeOrientId").value;
-    var stripeControl = document.getElementById("stripeControlId").value.split(",");
-    if (stripeControl.length == 1 && stripeControl[0] == "") {
+    var tailControl = document.getElementById("tailControlId").value.split(",");
+    if (tailControl.length == 1 && tailControl[0] == "") {
         if (stripeCorners.length == 1) {
-            stripeControl = ["S"];
+            tailControl = ["S"];
         } else {
-            stripeControl = []
+            tailControl = []
             for (var i = 0; i < stripeCorners.length; i++) {
-                stripeControl.push("E");
+                tailControl.push("E");
             }
         }
     }
-    if (stripeCorners.length != stripeControl.length) {
-        stripeControl = []
+    if (swallowtailPointVerticals.length != tailControl.length) {
+        tailControl = []
         for (var i = 0; i < stripeCorners.length; i++) {
-            stripeControl.push("E");
+            tailControl.push("E");
         }
     }
-    console.log(stripeOrient);
-    if (stripeOrient == "horiz") {
-        drawRectangularFlagFromHorizStripes(heightRatio, aspectRatio,
-            swallowtailPointStart, swallowtailCutDepth, swallowtailPointVerticals, stripeControl);
-    } else {
-        drawRectangularFlagFromHorizStripes(heightRatio, aspectRatio,
-            swallowtailPointStart, swallowtailCutDepth, swallowtailPointVerticals, stripeControl);
-        /*
-        drawFlagOutline(heightRatio, aspectRatio,
-            swallowtailPointStart, swallowtailCutDepth, swallowtailPointVerticals);
-            */
-    }
+    document.getElementById("tailControlId").value = tailControl;
+    drawRectangularFlagOutline(heightRatio, aspectRatio,
+        swallowtailPointStart, swallowtailCutDepth, swallowtailPointVerticals, tailControl);
 }
 </script>
 <style type="text/css">
@@ -90,8 +89,8 @@ I decided to make my own.
         <input type="text" name="swallowtailPointVerticals" id="swallowtailPointVerticalsId" value="" />
         <br/>
 
-        <label for="stripeControl">swallow tail stripe control (E = edge, C = center, S = skip)</label>
-        <input type="text" name="stripeControl" id="stripeControlId" value="C,C,C,C"/>
+        <label for="tailControl">swallow tail stripe control (E = edge, C = center, S = skip)</label>
+        <input type="text" name="tailControl" id="tailControlId" value="C,C,C,C"/>
         <br/>
     </fieldset>
 

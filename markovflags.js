@@ -163,42 +163,8 @@ function getBoundingBox(heightRatio, aspectRatio) {
     return [originX, originY, width, height];
 }
 
-function drawFlagOutline(heightRatio, aspectRatio,
-    swallowtailPointStart, swallowtailCutDepth, swallowtailPointVerticals) {
-
-    var ret = getBoundingBox(heightRatio, aspectRatio);
-    var originX = ret[0];
-    var originY = ret[1];
-    var width = ret[2];
-    var height = ret[3];
-
-    swallowStart = height * swallowtailPointStart;
-
-    // clockwise
-    var points = [ [originX, originY] ];
-    if (swallowtailPointVerticals.length > 0) {
-        points.push([originX + swallowStart, originY]); // swallowtail start
-
-        var swallowLength = width - swallowStart;
-        for (var i = 0; i < swallowtailPointVerticals.length; i++) {
-            swallowTipX = originX + width;
-            swallowTipY = originY + (height * swallowtailPointVerticals[i]);
-            points.push([swallowTipX, swallowTipY]);
-        }
-
-        points.push([originX + swallowStart, originY + height]); // swallowtail stop
-    } else {
-        points.push([originX + width, originY]);
-        points.push([originX + width, originY + height]);
-    }
-    points.push([originX, originY + height]);
-
-    drawPolygon(points, "1", "black", null);
-    return points;
-}
-
-function drawRectangularFlagFromHorizStripes(heightRatio, aspectRatio,
-    swallowtailPointStart, swallowtailCutDepth, stripeCorners, stripeControl) {
+function drawRectangularFlagOutline(heightRatio, aspectRatio,
+    swallowtailPointStart, swallowtailCutDepth, stripeCorners, tailControl) {
 
     var ret = getBoundingBox(heightRatio, aspectRatio);
     var originX = ret[0];
@@ -209,8 +175,6 @@ function drawRectangularFlagFromHorizStripes(heightRatio, aspectRatio,
     var swallowStart = (height * swallowtailPointStart);
     var swallowLength = width - swallowStart;
 
-console.log(stripeControl);
-
     // clockwise
     var points = [
         [ originX, originY ],
@@ -219,15 +183,14 @@ console.log(stripeControl);
     var curX = originX + swallowStart;
     var curY = originY;
     for (var i = 0; i < stripeCorners.length; i++) {
-        console.log('start %f %f', curX, curY);
-        if (stripeControl[i] == "E") {
+        if (tailControl[i] == "E") {
             // edge
             var lastEdge = 0;
             if (i > 0) {
                 lastEdge = stripeCorners[i - 1]
             }
 
-            if ((i % 2) == 0) {
+            if (((i % 2) == (stripeCorners.length % 2)) || (i == 0))  {
                 curX = originX + width;
                 curY = originY + (lastEdge * height);
                 points.push([curX, curY]);
@@ -241,7 +204,7 @@ console.log(stripeControl);
                 curY = originY + (stripeCorners[i] * height)
                 points.push([curX, curY]);
             }
-        } else if (stripeControl[i] == "C") {
+        } else if (tailControl[i] == "C") {
             // center
             var lastEdge = 0;
             if (i > 0) {
@@ -277,6 +240,28 @@ function drawVerticalStripes(heightRatio, aspectRatio, stripeColors, stripePoint
     var originY = ret[1];
     var width = ret[2];
     var height = ret[3];
+    var stripes = [];
+
+    var stripeStartX = originX;
+    var stripeStartY = originY;
+    for (var i = 0; i < stripePoints.length; i++) {
+        var left = 0;
+        if (i > 0) {
+            left = width * parseFloat(stripePoints[i - 1]);
+        }
+        var stripeWidth = (width * parseFloat(stripePoints[i])) - left;
+        var points = [
+            [ stripeStartX, stripeStartY ],
+            [ stripeStartX + stripeWidth, stripeStartY ],
+            [ stripeStartX + stripeWidth, stripeStartY + height ],
+            [ stripeStartX, stripeStartY + height ]
+        ];
+        stripes.push(points);
+        drawPolygon(points, "1", stripeColors[i], stripeColors[i]);
+        stripeStartX = stripeStartX + stripeWidth;
+    }
+
+    return stripes;
 }
 
 function drawHorizontalStripes(heightRatio, aspectRatio, stripeColors, stripePoints) {
