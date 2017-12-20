@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en"
+<head>
+<meta charset="utf-8" />
+<script type="text/javascript" src="markovflags.js"> </script>
+<script type="text/javascript">
+function updateFlag() {
+    var heightRatio = 0.9;
+    var aspectRatio = document.getElementById("aspectRatioId").value;
+
+    var canvasEle = document.getElementById("flag")
+    var ctx = canvasEle.getContext("2d");
+    ctx.clearRect(0, 0, canvasEle.width, canvasEle.height);
+
+
+    var stripeMode = "horizontal";
+    var stripeColors = document.getElementById("stripeColorCsvId").value.split(",");
+    var stripeCorners = document.getElementById("stripeWidthCsvId").value.split(",");
+    drawHorizontalStripes(heightRatio, aspectRatio, stripeColors, stripeCorners);
+
+    var swallowtailPointStart = document.getElementById("swallowtailPointStartId").value;
+    var swallowtailCutDepth = document.getElementById("swallowtailCutDepthId").value;
+    var swallowtailPointVerticals = document.getElementById("swallowtailPointVerticalsId").value.split(",");
+    if (swallowtailPointVerticals[0] === "") {
+        swallowtailPointVerticals = stripeCorners;
+    }
+    var stripeOrient = document.getElementById("stripeOrientId").value;
+    var stripeControl = document.getElementById("stripeControlId").value.split(",");
+    if (stripeControl.length == 1 && stripeControl[0] == "") {
+        if (stripeCorners.length == 1) {
+            stripeControl = ["S"];
+        } else {
+            stripeControl = []
+            for (var i = 0; i < stripeCorners.length; i++) {
+                stripeControl.push("E");
+            }
+        }
+    }
+    if (stripeCorners.length != stripeControl.length) {
+        stripeControl = []
+        for (var i = 0; i < stripeCorners.length; i++) {
+            stripeControl.push("E");
+        }
+    }
+    console.log(stripeOrient);
+    if (stripeOrient == "horiz") {
+        drawRectangularFlagFromHorizStripes(heightRatio, aspectRatio,
+            swallowtailPointStart, swallowtailCutDepth, swallowtailPointVerticals, stripeControl);
+    } else {
+        drawRectangularFlagFromHorizStripes(heightRatio, aspectRatio,
+            swallowtailPointStart, swallowtailCutDepth, swallowtailPointVerticals, stripeControl);
+        /*
+        drawFlagOutline(heightRatio, aspectRatio,
+            swallowtailPointStart, swallowtailCutDepth, swallowtailPointVerticals);
+            */
+    }
+}
+</script>
+<style type="text/css">
+    canvas {
+        border: solid red 1px;
+    }
+</style>
+</head>
+<body onload="updateFlag();">
+<h1>Generate A Flag</h1>
+Being inspired from the flag generator on
+<a href="http://www.learnedleague.com/">Learned League</a>, and
+<a href="http://politiscales.la-commune.net/en_US/quiz/">PolitiScacles</a>,
+I decided to make my own.
+<canvas id="flag" height="500" width="1000">
+  Your browser needs to support canvas for this to work!
+</canvas>
+<form id="debugForm">
+    <fieldset>
+        <legend>Shape</legend>
+        <label for="aspectRatio">aspect ratio</label>
+        <input type="text" name="aspectRatio" id="aspectRatioId" value="1.5" />
+        <br/>
+
+        <label for="swallowtailPointStart">swallowtail start ratio</label>
+        <input type="text" name="swallowtailPointStart" id="swallowtailPointStartId" value="0.5" />
+        <br/>
+
+        <label for="swallowtailCutDepth">swallowtail cut depth ratio</label>
+        <input text="text" name="swallowtailCutDepth" id="swallowtailCutDepthId" value="1.0" />
+        <br/>
+
+        <label for="swallowtailPointVerticals">swallowtail point vertical ratio csv</label>
+        <input type="text" name="swallowtailPointVerticals" id="swallowtailPointVerticalsId" value="" />
+        <br/>
+
+        <label for="stripeControl">swallow tail stripe control (E = edge, C = center, S = skip)</label>
+        <input type="text" name="stripeControl" id="stripeControlId" value="C,C,C,C"/>
+        <br/>
+    </fieldset>
+
+    <fieldset>
+        <legend>Background Stripes</legend>
+        <label for="stripeOrient">stripe orientation</label>
+        <select name="stripeOrient" id="stripeOrientId">
+            <option value="horiz" selected>horizontal</choice>
+            <option value="vert">vertical</choice>
+            <option value="diag">diagonal</choice>
+        </select>
+        <br/>
+
+        <label for="stripeColorCsv">color csv</label>
+        <input type="text" name="stripeColorCsv" id="stripeColorCsvId" value="green,red,yellow,blue" />
+        <br/>
+
+        <label for="stripeWidthCsv">width ratio csv</label>
+        <input type="text" name="stripeWidthCsv" id="stripeWidthCsvId" value="0.25,0.5,0.75,1.0" />
+        <br/>
+    </fieldset>
+
+    <button type="button" onclick="updateFlag();">redraw</button>
+</form>
+</body>
+</html>
