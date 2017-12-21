@@ -174,6 +174,7 @@ function drawRectangularFlagOutline(heightRatio, aspectRatio,
 
     var swallowStart = (height * swallowtailPointStart);
     var swallowLength = width - swallowStart;
+    var insideX = originX + swallowStart;
 
     // clockwise
     var points = [
@@ -183,49 +184,70 @@ function drawRectangularFlagOutline(heightRatio, aspectRatio,
     var curX = originX + swallowStart;
     var curY = originY;
     for (var i = 0; i < stripeCorners.length; i++) {
-        if (tailControl[i] == "E") {
-            // edge
-            var lastEdge = 0;
-            if (i > 0) {
-                lastEdge = stripeCorners[i - 1]
+        var curControl = tailControl[i];
+        if (curControl == "c") {
+            // center point
+            if (curX > insideX) {
+                // move home
+                curX -= swallowLength;
+                points.push([curX, curY]);
             }
 
-            if (((i % 2) == (stripeCorners.length % 2)) || (i == 0))  {
-                curX = originX + width;
-                curY = originY + (lastEdge * height);
-                points.push([curX, curY]);
-                // cut back to center
-                curX -= swallowLength * swallowtailCutDepth;
-                curY = originY + (stripeCorners[i] * height)
-                points.push([curX, curY]);
-            } else {
-                // cut towards edge
-                curX = originX + width;
-                curY = originY + (stripeCorners[i] * height)
-                points.push([curX, curY]);
-            }
-        } else if (tailControl[i] == "C") {
-            // center
             var lastEdge = 0;
             if (i > 0) {
                 lastEdge = stripeCorners[i - 1]
             }
             var midDelta = ((parseFloat(stripeCorners[i]) * height) - (lastEdge * height)) / 2;
-            curX = originX + width;
+            curX += swallowLength;
             curY += midDelta;
             points.push([curX, curY]);
-            if (i < (stripeCorners.length - 1)) {
-                // cut back to center
-                curX -= swallowLength * swallowtailCutDepth;
-                curY += midDelta;
-            }
+
+            curX -= swallowLength;
+            curY += midDelta;
             points.push([curX, curY]);
-        } else {
-            // skip
-            curY = originY + (stripeCorners[i] * height)
+        } else if (curControl == 'i') {
+            // inside straight
+            if (curX > insideX) {
+                // move home
+                curX -= swallowLength;
+                points.push([curX, curY]);
+            }
+
+            curY = (parseFloat(stripeCorners[i]) * height) + originY;
+            points.push([curX, curY]);
+        } else if (curControl == 'o') {
+            // outside straight
+            if (curX == insideX) {
+                // move out
+                curX += swallowLength;
+                points.push([curX, curY]);
+            }
+
+            curY = (parseFloat(stripeCorners[i]) * height) + originY;
+            points.push([curX, curY]);
+        } else if (curControl == 't') {
+            // top point
+            if (curX == insideX) {
+                // move out
+                curX += swallowLength;
+                points.push([curX, curY]);
+            }
+
+            curX = insideX;
+            curY = (parseFloat(stripeCorners[i]) * height) + originY;
+            points.push([curX, curY]);
+        } else if (curControl == 'b') {
+            // bottom point
+            if (curX > insideX) {
+                // move home
+                curX -= swallowLength;
+                points.push([curX, curY]);
+            }
+
+            curX += swallowLength;
+            curY = (parseFloat(stripeCorners[i]) * height) + originY;
             points.push([curX, curY]);
         }
-        points.push([curX, curY]);
     }
     points.push([swallowStart, originY + height]);
     points.push([originX, originY + height]);
