@@ -375,6 +375,54 @@ function drawDiagonalStripes(heightRatio, aspectRatio, stripeColors, stripeCorne
     return stripes;
 }
 
+function drawCanton(heightRatio, aspectRatio, cantonMode, cantonColor) {
+    if (cantonMode == "none") {
+        return [];
+    }
+
+    var ret = getBoundingBox(heightRatio, aspectRatio);
+    var originX = ret[0];
+    var originY = ret[1];
+    var width = ret[2];
+    var height = ret[3];
+
+    var points = [];
+
+    if (cantonMode == "equi triangle") {
+        points = [
+            [originX, originY],
+            [originX + (height / 2.0  * Math.sqrt(3)), originY + (height / 2.0)],
+            [originX, originY + height],
+        ];
+
+    } else if (cantonMode == "iso triangle") {
+        points = [
+            [originX, originY],
+            [originX + width, originY + (height / 2.0)],
+            [originX, originY + height],
+        ];
+    } else {
+        var cantonHeight = height / 2.0;
+        var cantonWidth = width / 2.0;
+        if (cantonMode == "square") {
+            cantonWidth = height / 2.0;
+        } else if (cantonMode == "bar") {
+            cantonWidth = height / 2.0;
+            cantonHeight = height;
+        }
+        points = [
+            [ originX, originY ],
+            [ originX + cantonWidth, originY ],
+            [ originX + cantonWidth, originY + cantonHeight ],
+            [ originX, originY + cantonHeight ],
+        ]
+    }
+
+    drawPolygon(points, "0", "black", cantonColor);
+
+    return points;
+}
+
 function drawPolygon(points, lineWidth, lineColor, fillColor, clip = false) {
     var ctx =  document.getElementById("flag").getContext("2d")
     ctx.beginPath();

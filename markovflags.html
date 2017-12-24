@@ -8,18 +8,23 @@
 function updateFlag() {
     var heightRatio = 0.9;
     var aspectRatio = document.getElementById("aspectRatioId").value;
+    var stripeCorners = document.getElementById("stripeWidthCsvId").value.split(",");
 
     var canvasEle = document.getElementById("flag")
     var ctx = canvasEle.getContext("2d");
     ctx.clearRect(0, 0, canvasEle.width, canvasEle.height);
 
     // make clip path
-    var outsidePoints = getClipPath();
+    var swallowtailPointVerticals = document.getElementById("swallowtailPointVerticalsId").value.split(",");
+    if (swallowtailPointVerticals[0] === "") {
+        swallowtailPointVerticals = stripeCorners;
+        document.getElementById("swallowtailPointVerticalsId").value = stripeCorners;
+    }
+    var outsidePoints = getClipPath(heightRatio, aspectRatio, swallowtailPointVerticals);
 
     // draw stripes
     var stripeMode = "horizontal";
     var stripeColors = document.getElementById("stripeColorCsvId").value.split(",");
-    var stripeCorners = document.getElementById("stripeWidthCsvId").value.split(",");
     var stripeOrient = document.getElementById("stripeOrientId").value;
     if (stripeOrient == "vert") {
         drawVerticalStripes(heightRatio, aspectRatio, stripeColors, stripeCorners);
@@ -29,22 +34,20 @@ function updateFlag() {
         drawHorizontalStripes(heightRatio, aspectRatio, stripeColors, stripeCorners);
     }
 
+    // draw canton
+    var cantonMode = document.getElementById("cantonModeId").value;
+    var cantonColor = document.getElementById("cantonColorId").value;
+    if (cantonMode != "none") {
+        drawCanton(heightRatio, aspectRatio, cantonMode, cantonColor);
+    }
+
     // draw outline
     drawPolygon(outsidePoints, "1", "black", null);
 }
 
-function getClipPath() {
-    var heightRatio = 0.9;
-    var aspectRatio = document.getElementById("aspectRatioId").value;
-
-    var stripeCorners = document.getElementById("stripeWidthCsvId").value.split(",");
+function getClipPath(heightRatio, aspectRatio, swallowtailPointVerticals) {
     var swallowtailPointStart = document.getElementById("swallowtailPointStartId").value;
     var swallowtailCutDepth = document.getElementById("swallowtailCutDepthId").value;
-    var swallowtailPointVerticals = document.getElementById("swallowtailPointVerticalsId").value.split(",");
-    if (swallowtailPointVerticals[0] === "") {
-        swallowtailPointVerticals = stripeCorners;
-        document.getElementById("swallowtailPointVerticalsId").value = stripeCorners;
-    }
     var tailControl = document.getElementById("tailControlId").value.split(",");
     if (tailControl.length == 1 && tailControl[0] == "") {
         if (stripeCorners.length == 1) {
@@ -86,7 +89,7 @@ I decided to make my own.
     <fieldset>
         <legend>Shape</legend>
         <label for="aspectRatio">aspect ratio</label>
-        <input type="text" name="aspectRatio" id="aspectRatioId" value="1.5" />
+        <input type="text" name="aspectRatio" id="aspectRatioId" value="2.0" />
         <br/>
 
         <label for="swallowtailPointStart">swallowtail start ratio</label>
@@ -110,9 +113,9 @@ I decided to make my own.
         <legend>Background Stripes</legend>
         <label for="stripeOrient">stripe orientation</label>
         <select name="stripeOrient" id="stripeOrientId">
-            <option value="horiz">horizontal</choice>
+            <option value="horiz selected">horizontal</choice>
             <option value="vert">vertical</choice>
-            <option value="diag" selected>diagonal</choice>
+            <option value="diag" >diagonal</choice>
         </select>
         <br/>
 
@@ -124,6 +127,23 @@ I decided to make my own.
         <input type="text" name="stripeWidthCsv" id="stripeWidthCsvId" value="0.25,0.5,0.75,1.0" />
         <br/>
     </fieldset>
+
+    <fieldset>
+        <legend>Canton</legend>
+        <label for="cantonMode">canton</label>
+        <select name="cantonMode" id="cantonModeId">
+            <option value="none" selected>none</choice>
+            <option value="rectangle">rectangle</choice>
+            <option value="square">square</choice>
+            <option value="bar">bar</choice>
+            <option value="equi triangle">equi triangle</choice>
+            <option value="iso triangle">iso triangle</choice>
+        </select>
+        <label for="cantonColor">color</label>
+        <input type="text" name="cantonColor" id="cantonColorId" value="black" />
+        <br/>
+    </fieldset>
+
 
     <button type="button" onclick="updateFlag();">redraw</button>
 </form>
