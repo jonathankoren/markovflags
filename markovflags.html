@@ -4,6 +4,7 @@
 <meta charset="utf-8" />
 <script type="text/javascript" src="markovflags.js"> </script>
 <script type="text/javascript">
+
 function updateFlag() {
     var heightRatio = 0.9;
     var aspectRatio = document.getElementById("aspectRatioId").value;
@@ -12,20 +13,31 @@ function updateFlag() {
     var ctx = canvasEle.getContext("2d");
     ctx.clearRect(0, 0, canvasEle.width, canvasEle.height);
 
+    // make clip path
+    var outsidePoints = getClipPath();
 
+    // draw stripes
     var stripeMode = "horizontal";
     var stripeColors = document.getElementById("stripeColorCsvId").value.split(",");
     var stripeCorners = document.getElementById("stripeWidthCsvId").value.split(",");
     var stripeOrient = document.getElementById("stripeOrientId").value;
-    console.log(stripeOrient);
     if (stripeOrient == "vert") {
         drawVerticalStripes(heightRatio, aspectRatio, stripeColors, stripeCorners);
     } else if (stripeOrient == "diag") {
-
+        drawDiagonalStripes(heightRatio, aspectRatio, stripeColors, stripeCorners);
     } else {
         drawHorizontalStripes(heightRatio, aspectRatio, stripeColors, stripeCorners);
     }
 
+    // draw outline
+    drawPolygon(outsidePoints, "1", "black", null);
+}
+
+function getClipPath() {
+    var heightRatio = 0.9;
+    var aspectRatio = document.getElementById("aspectRatioId").value;
+
+    var stripeCorners = document.getElementById("stripeWidthCsvId").value.split(",");
     var swallowtailPointStart = document.getElementById("swallowtailPointStartId").value;
     var swallowtailCutDepth = document.getElementById("swallowtailCutDepthId").value;
     var swallowtailPointVerticals = document.getElementById("swallowtailPointVerticalsId").value.split(",");
@@ -51,7 +63,7 @@ function updateFlag() {
         }
     }
     document.getElementById("tailControlId").value = tailControl;
-    drawRectangularFlagOutline(heightRatio, aspectRatio,
+    return drawRectangularFlagOutline(heightRatio, aspectRatio,
         swallowtailPointStart, swallowtailCutDepth, swallowtailPointVerticals, tailControl);
 }
 </script>
@@ -86,11 +98,11 @@ I decided to make my own.
         <br/>
 
         <label for="swallowtailPointVerticals">swallowtail point vertical ratio csv</label>
-        <input type="text" name="swallowtailPointVerticals" id="swallowtailPointVerticalsId" value="" />
+        <input type="text" name="swallowtailPointVerticals" id="swallowtailPointVerticalsId" value="1.0" />
         <br/>
 
         <label for="tailControl">swallow tail stripe control (c = center, i = inside, o = outside, t = top, b = bottom)</label>
-        <input type="text" name="tailControl" id="tailControlId" value="c,c,c,c"/>
+        <input type="text" name="tailControl" id="tailControlId" value="o"/>
         <br/>
     </fieldset>
 
@@ -98,14 +110,14 @@ I decided to make my own.
         <legend>Background Stripes</legend>
         <label for="stripeOrient">stripe orientation</label>
         <select name="stripeOrient" id="stripeOrientId">
-            <option value="horiz" selected>horizontal</choice>
+            <option value="horiz">horizontal</choice>
             <option value="vert">vertical</choice>
-            <option value="diag">diagonal</choice>
+            <option value="diag" selected>diagonal</choice>
         </select>
         <br/>
 
         <label for="stripeColorCsv">color csv</label>
-        <input type="text" name="stripeColorCsv" id="stripeColorCsvId" value="#eee,#ddd,#eee,#ddd" />
+        <input type="text" name="stripeColorCsv" id="stripeColorCsvId" value="red,blue,green,yellow" />
         <br/>
 
         <label for="stripeWidthCsv">width ratio csv</label>

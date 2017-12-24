@@ -158,8 +158,8 @@ function getBoundingBox(heightRatio, aspectRatio) {
     var canvasEle = document.getElementById("flag");
     var height = canvasEle.height * heightRatio;
     var width = height * aspectRatio;
-    var originX = (canvasEle.width - width) / 2;
-    var originY = (canvasEle.height - height) / 2;
+    var originX = (canvasEle.width - width) / 2.0;
+    var originY = (canvasEle.height - height) / 2.0;
     return [originX, originY, width, height];
 }
 
@@ -249,10 +249,10 @@ function drawRectangularFlagOutline(heightRatio, aspectRatio,
             points.push([curX, curY]);
         }
     }
-    points.push([swallowStart, originY + height]);
+    points.push([originX + swallowStart, originY + height]);
     points.push([originX, originY + height]);
 
-    drawPolygon(points, "1", "black", null);
+    drawPolygon(points, "1", "black", null, true);
     return points;
 }
 
@@ -317,7 +317,65 @@ function drawHorizontalStripes(heightRatio, aspectRatio, stripeColors, stripePoi
     return stripes;
 }
 
-function drawPolygon(points, lineWidth, lineColor, fillColor) {
+function drawDiagonalStripes(heightRatio, aspectRatio, stripeColors, stripeCorners) {
+    var ret = getBoundingBox(heightRatio, aspectRatio);
+    var originX = ret[0];
+    var originY = ret[1];
+    var width = ret[2];
+    var height = ret[3];
+    var pointSlope = height / (width * 1.0);
+    var lineSlope = -pointSlope;
+
+    stripes = [];
+    for (var i = 0; i < stripeCorners.length; i++) {
+        var midX = (originX + width) - (stripeCorners[i] * width);
+        var midY = originY + (stripeCorners[i] * height);
+
+
+        // solve for when startY = originY
+        var tX = ((midX - originX) / width);
+        var tY = ((midY - originY) / height);
+
+        var startX = originX;
+        var endX   = originX + width;
+
+        var startY = originY;
+        var endY   = originY + height;
+
+        if (tY > tX) {
+            startY = midY - (midX - startX) * pointSlope;
+            endX   = midX + (midY - startY) / pointSlope;
+        } else {
+            startX = midX - (midY - startY) / pointSlope;
+            endY   = midY + (midX - startX) * pointSlope;
+        }
+
+        points = [[ startX, startY ]];
+        if (i == 0) {
+            points.push([originX + width, originY]);
+        } else {
+            var prevLeft = stripes[i - 1][0];
+            var prevRight = stripes[i - 1][stripes[i - 1].length - 1];
+
+            if ((startY != originY) && (prevLeft[1] == originY)) {
+                points.push([originX, originY]);
+            }
+            points.push(prevLeft);
+            points.push(prevRight);
+            if ((startY != originY) && (prevLeft[1] == originY)) {
+                points.push([originX + width, originY + height]);
+            }
+        }
+        points.push([endX, endY]);
+
+        drawPolygon(points, "1", stripeColors[i], stripeColors[i]);
+        stripes.push(points);
+    }
+
+    return stripes;
+}
+
+function drawPolygon(points, lineWidth, lineColor, fillColor, clip = false) {
     var ctx =  document.getElementById("flag").getContext("2d")
     ctx.beginPath();
     ctx.lineWidth = lineWidth
@@ -334,5 +392,9 @@ function drawPolygon(points, lineWidth, lineColor, fillColor) {
     if (fillColor !== null) {
         ctx.fill();
     }
-    ctx.stroke();
+    if (clip) {
+        ctx.clip();
+    } else {
+        ctx.stroke();
+    }
 }
