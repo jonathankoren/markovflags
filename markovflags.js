@@ -154,25 +154,33 @@ Maybe we need basic patterns:
     border
 */
 
-function getBoundingBox(heightRatio, aspectRatio) {
-    var canvasEle = document.getElementById("flag");
-    var height = canvasEle.height * heightRatio;
-    var width = height * aspectRatio;
+function renderFlag(ele, flagConfig) {
+    // make clip path
+    var outsidePoints = clipFlagOutline(ele, flagConfig);
+
+    drawStripes(ele, flagConfig);
+    drawCanton(ele, flagConfig);
+
+    // draw outline
+    drawPolygon(ele, outsidePoints, "1", "black", null);
+}
+
+function getBoundingBox(canvasEle, flagConfig) {
+    var height = canvasEle.height * flagConfig.dimensions.heightRatio;
+    var width = height * flagConfig.dimensions.aspectRatio;
     var originX = (canvasEle.width - width) / 2.0;
     var originY = (canvasEle.height - height) / 2.0;
     return [originX, originY, width, height];
 }
 
-function drawRectangularFlagOutline(heightRatio, aspectRatio,
-    swallowtailPointStart, swallowtailCutDepth, stripeCorners, tailControl) {
-
-    var ret = getBoundingBox(heightRatio, aspectRatio);
+function clipFlagOutline(ele, flagConfig) {
+    var ret = getBoundingBox(ele, flagConfig);
     var originX = ret[0];
     var originY = ret[1];
     var width = ret[2];
     var height = ret[3];
 
-    var swallowStart = (height * swallowtailPointStart);
+    var swallowStart = (height * flagConfig.swallowtails.start);
     var swallowLength = width - swallowStart;
     var insideX = originX + swallowStart;
 
@@ -183,8 +191,8 @@ function drawRectangularFlagOutline(heightRatio, aspectRatio,
     ];
     var curX = originX + swallowStart;
     var curY = originY;
-    for (var i = 0; i < stripeCorners.length; i++) {
-        var curControl = tailControl[i];
+    for (var i = 0; i < flagConfig.swallowtails.points.length; i++) {
+        var curControl = flagConfig.swallowtails.controls[i];
         if (curControl == "c") {
             // center point
             if (curX > insideX) {
@@ -195,9 +203,9 @@ function drawRectangularFlagOutline(heightRatio, aspectRatio,
 
             var lastEdge = 0;
             if (i > 0) {
-                lastEdge = stripeCorners[i - 1]
+                lastEdge = flagConfig.swallowtails.points[i - 1]
             }
-            var midDelta = ((parseFloat(stripeCorners[i]) * height) - (lastEdge * height)) / 2;
+            var midDelta = ((parseFloat(flagConfig.swallowtails.points[i]) * height) - (lastEdge * height)) / 2;
             curX += swallowLength;
             curY += midDelta;
             points.push([curX, curY]);
@@ -213,7 +221,7 @@ function drawRectangularFlagOutline(heightRatio, aspectRatio,
                 points.push([curX, curY]);
             }
 
-            curY = (parseFloat(stripeCorners[i]) * height) + originY;
+            curY = (parseFloat(flagConfig.swallowtails.points[i]) * height) + originY;
             points.push([curX, curY]);
         } else if (curControl == 'o') {
             // outside straight
@@ -223,7 +231,7 @@ function drawRectangularFlagOutline(heightRatio, aspectRatio,
                 points.push([curX, curY]);
             }
 
-            curY = (parseFloat(stripeCorners[i]) * height) + originY;
+            curY = (parseFloat(flagConfig.swallowtails.points[i]) * height) + originY;
             points.push([curX, curY]);
         } else if (curControl == 't') {
             // top point
@@ -234,7 +242,7 @@ function drawRectangularFlagOutline(heightRatio, aspectRatio,
             }
 
             curX = insideX;
-            curY = (parseFloat(stripeCorners[i]) * height) + originY;
+            curY = (parseFloat(flagConfig.swallowtails.points[i]) * height) + originY;
             points.push([curX, curY]);
         } else if (curControl == 'b') {
             // bottom point
@@ -245,19 +253,29 @@ function drawRectangularFlagOutline(heightRatio, aspectRatio,
             }
 
             curX += swallowLength;
-            curY = (parseFloat(stripeCorners[i]) * height) + originY;
+            curY = (parseFloat(flagConfig.swallowtails.points[i]) * height) + originY;
             points.push([curX, curY]);
         }
     }
     points.push([originX + swallowStart, originY + height]);
     points.push([originX, originY + height]);
 
-    drawPolygon(points, "1", "black", null, true);
+    drawPolygon(ele, points, "1", "black", null, true);
     return points;
 }
 
-function drawVerticalStripes(heightRatio, aspectRatio, stripeColors, stripePoints) {
-    var ret = getBoundingBox(heightRatio, aspectRatio);
+function drawStripes(ele, flagConfig) {
+    if (flagConfig.stripes.orient == "vert") {
+        drawVerticalStripes(ele, flagConfig);
+    } else if (flagConfig.stripes.orient == "diag") {
+        drawDiagonalStripes(ele, flagConfig);
+    } else {
+        drawHorizontalStripes(ele, flagConfig);
+    }
+}
+
+function drawVerticalStripes(ele, flagConfig) {
+    var ret = getBoundingBox(ele, flagConfig);
     var originX = ret[0];
     var originY = ret[1];
     var width = ret[2];
@@ -266,12 +284,12 @@ function drawVerticalStripes(heightRatio, aspectRatio, stripeColors, stripePoint
 
     var stripeStartX = originX;
     var stripeStartY = originY;
-    for (var i = 0; i < stripePoints.length; i++) {
+    for (var i = 0; i < flagConfig.stripes.points.length; i++) {
         var left = 0;
         if (i > 0) {
-            left = width * parseFloat(stripePoints[i - 1]);
+            left = width * parseFloat(flagConfig.stripes.points[i - 1]);
         }
-        var stripeWidth = (width * parseFloat(stripePoints[i])) - left;
+        var stripeWidth = (width * parseFloat(flagConfig.stripes.points[i])) - left;
         var points = [
             [ stripeStartX, stripeStartY ],
             [ stripeStartX + stripeWidth, stripeStartY ],
@@ -279,15 +297,15 @@ function drawVerticalStripes(heightRatio, aspectRatio, stripeColors, stripePoint
             [ stripeStartX, stripeStartY + height ]
         ];
         stripes.push(points);
-        drawPolygon(points, "1", stripeColors[i], stripeColors[i]);
+        drawPolygon(ele, points, "1", flagConfig.stripes.colors[i], flagConfig.stripes.colors[i]);
         stripeStartX = stripeStartX + stripeWidth;
     }
 
     return stripes;
 }
 
-function drawHorizontalStripes(heightRatio, aspectRatio, stripeColors, stripePoints) {
-    var ret = getBoundingBox(heightRatio, aspectRatio);
+function drawHorizontalStripes(ele, flagConfig) {
+    var ret = getBoundingBox(ele, flagConfig);
     var originX = ret[0];
     var originY = ret[1];
     var width = ret[2];
@@ -297,12 +315,12 @@ function drawHorizontalStripes(heightRatio, aspectRatio, stripeColors, stripePoi
 
     var stripeStartX = originX;
     var stripeStartY = originY;
-    for (var i = 0; i < stripePoints.length; i++) {
+    for (var i = 0; i < flagConfig.stripes.points.length; i++) {
         var top = 0;
         if (i > 0) {
-            top = height * parseFloat(stripePoints[i - 1]);
+            top = height * parseFloat(flagConfig.stripes.points[i - 1]);
         }
-        var stripeWidth = (height * parseFloat(stripePoints[i])) - top;
+        var stripeWidth = (height * parseFloat(flagConfig.stripes.points[i])) - top;
         var points = [
             [ stripeStartX, stripeStartY ],
             [ stripeStartX + width, stripeStartY ],
@@ -310,15 +328,15 @@ function drawHorizontalStripes(heightRatio, aspectRatio, stripeColors, stripePoi
             [ stripeStartX, stripeStartY + stripeWidth ]
         ];
         stripes.push(points);
-        drawPolygon(points, "1", stripeColors[i], stripeColors[i]);
+        drawPolygon(ele, points, "1", flagConfig.stripes.colors[i], flagConfig.stripes.colors[i]);
         stripeStartY = stripeStartY + stripeWidth;
     }
 
     return stripes;
 }
 
-function drawDiagonalStripes(heightRatio, aspectRatio, stripeColors, stripeCorners) {
-    var ret = getBoundingBox(heightRatio, aspectRatio);
+function drawDiagonalStripes(ele, flagConfig) {
+    var ret = getBoundingBox(ele, flagConfig);
     var originX = ret[0];
     var originY = ret[1];
     var width = ret[2];
@@ -327,9 +345,9 @@ function drawDiagonalStripes(heightRatio, aspectRatio, stripeColors, stripeCorne
     var lineSlope = -pointSlope;
 
     stripes = [];
-    for (var i = 0; i < stripeCorners.length; i++) {
-        var midX = (originX + width) - (stripeCorners[i] * width);
-        var midY = originY + (stripeCorners[i] * height);
+    for (var i = 0; i < flagConfig.stripes.points.length; i++) {
+        var midX = (originX + width) - (flagConfig.stripes.points[i] * width);
+        var midY = originY + (flagConfig.stripes.points[i] * height);
 
 
         // solve for when startY = originY
@@ -368,19 +386,19 @@ function drawDiagonalStripes(heightRatio, aspectRatio, stripeColors, stripeCorne
         }
         points.push([endX, endY]);
 
-        drawPolygon(points, "1", stripeColors[i], stripeColors[i]);
+        drawPolygon(ele, points, "1", flagConfig.stripes.colors[i], flagConfig.stripes.colors[i]);
         stripes.push(points);
     }
 
     return stripes;
 }
 
-function drawCanton(heightRatio, aspectRatio, cantonMode, cantonColor) {
-    if (cantonMode == "none") {
+function drawCanton(ele, flagConfig) {
+    if (flagConfig.canton.mode == "none") {
         return [];
     }
 
-    var ret = getBoundingBox(heightRatio, aspectRatio);
+    var ret = getBoundingBox(ele, flagConfig);
     var originX = ret[0];
     var originY = ret[1];
     var width = ret[2];
@@ -388,14 +406,14 @@ function drawCanton(heightRatio, aspectRatio, cantonMode, cantonColor) {
 
     var points = [];
 
-    if (cantonMode == "equi triangle") {
+    if (flagConfig.canton.mode == "equi triangle") {
         points = [
             [originX, originY],
             [originX + (height / 2.0  * Math.sqrt(3)), originY + (height / 2.0)],
             [originX, originY + height],
         ];
 
-    } else if (cantonMode == "iso triangle") {
+    } else if (flagConfig.canton.mode == "iso triangle") {
         points = [
             [originX, originY],
             [originX + width, originY + (height / 2.0)],
@@ -404,9 +422,9 @@ function drawCanton(heightRatio, aspectRatio, cantonMode, cantonColor) {
     } else {
         var cantonHeight = height / 2.0;
         var cantonWidth = width / 2.0;
-        if (cantonMode == "square") {
+        if (flagConfig.canton.mode == "square") {
             cantonWidth = height / 2.0;
-        } else if (cantonMode == "bar") {
+        } else if (flagConfig.canton.mode == "bar") {
             cantonWidth = height / 2.0;
             cantonHeight = height;
         }
@@ -418,13 +436,13 @@ function drawCanton(heightRatio, aspectRatio, cantonMode, cantonColor) {
         ]
     }
 
-    drawPolygon(points, "0", "black", cantonColor);
+    drawPolygon(ele, points, "0", flagConfig.canton.color, flagConfig.canton.color);
 
     return points;
 }
 
-function drawPolygon(points, lineWidth, lineColor, fillColor, clip = false) {
-    var ctx =  document.getElementById("flag").getContext("2d")
+function drawPolygon(ele, points, lineWidth, lineColor, fillColor, clip=false) {
+    var ctx =  ele.getContext("2d")
     ctx.beginPath();
     ctx.lineWidth = lineWidth
     ctx.strokeStyle = lineColor

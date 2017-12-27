@@ -6,68 +6,56 @@
 <script type="text/javascript">
 
 function updateFlag() {
-    var heightRatio = 0.9;
-    var aspectRatio = document.getElementById("aspectRatioId").value;
-    var stripeCorners = document.getElementById("stripeWidthCsvId").value.split(",");
-
     var canvasEle = document.getElementById("flag")
     var ctx = canvasEle.getContext("2d");
     ctx.clearRect(0, 0, canvasEle.width, canvasEle.height);
 
-    // make clip path
-    var swallowtailPointVerticals = document.getElementById("swallowtailPointVerticalsId").value.split(",");
+    renderFlag(canvasEle, makeConfig());
+}
+
+function makeConfig() {
+    var stripeCorners = document.getElementById("stripeWidthCsvId").value.split(",");
+    var swallowtailPointVerticals = document.getElementById("swallowtailPointStartId").value;
     if (swallowtailPointVerticals[0] === "") {
         swallowtailPointVerticals = stripeCorners;
         document.getElementById("swallowtailPointVerticalsId").value = stripeCorners;
     }
-    var outsidePoints = getClipPath(heightRatio, aspectRatio, swallowtailPointVerticals);
 
-    // draw stripes
-    var stripeMode = "horizontal";
-    var stripeColors = document.getElementById("stripeColorCsvId").value.split(",");
-    var stripeOrient = document.getElementById("stripeOrientId").value;
-    if (stripeOrient == "vert") {
-        drawVerticalStripes(heightRatio, aspectRatio, stripeColors, stripeCorners);
-    } else if (stripeOrient == "diag") {
-        drawDiagonalStripes(heightRatio, aspectRatio, stripeColors, stripeCorners);
-    } else {
-        drawHorizontalStripes(heightRatio, aspectRatio, stripeColors, stripeCorners);
-    }
-
-    // draw canton
-    var cantonMode = document.getElementById("cantonModeId").value;
-    var cantonColor = document.getElementById("cantonColorId").value;
-    if (cantonMode != "none") {
-        drawCanton(heightRatio, aspectRatio, cantonMode, cantonColor);
-    }
-
-    // draw outline
-    drawPolygon(outsidePoints, "1", "black", null);
-}
-
-function getClipPath(heightRatio, aspectRatio, swallowtailPointVerticals) {
-    var swallowtailPointStart = document.getElementById("swallowtailPointStartId").value;
-    var swallowtailCutDepth = document.getElementById("swallowtailCutDepthId").value;
-    var tailControl = document.getElementById("tailControlId").value.split(",");
-    if (tailControl.length == 1 && tailControl[0] == "") {
-        if (stripeCorners.length == 1) {
-            tailControl = ["o"];
+    var tailControls = document.getElementById("tailControlId").value.split(",");
+    if (tailControls[0] == "") {
+        if (swallowtailPointVerticals.length == 1) {
+            tailControls = ["o"];
         } else {
-            tailControl = []
-            for (var i = 0; i < stripeCorners.length; i++) {
-                tailControl.push("o");
+            var x = tailControls.length
+            for (var i = x; i < swallowtailPointVerticals.length; i++) {
+                tailControls.push("o");
             }
         }
     }
-    if (swallowtailPointVerticals.length != tailControl.length) {
-        tailControl = []
-        for (var i = 0; i < stripeCorners.length; i++) {
-            tailControl.push("o");
+
+    return {
+        dimensions: {
+            heightRatio: 0.9,
+            aspectRatio: document.getElementById("aspectRatioId").value,
+        },
+
+        swallowtails: {
+            start: swallowtailPointVerticals,
+            points: document.getElementById("swallowtailPointVerticalsId").value.split(","),
+            controls: tailControls,
+        },
+
+        stripes: {
+            orient: document.getElementById("stripeOrientId").value,
+            points: stripeCorners,
+            colors: document.getElementById("stripeColorCsvId").value.split(","),
+        },
+
+        canton: {
+            mode: document.getElementById("cantonModeId").value,
+            color: document.getElementById("cantonColorId").value,
         }
     }
-    document.getElementById("tailControlId").value = tailControl;
-    return drawRectangularFlagOutline(heightRatio, aspectRatio,
-        swallowtailPointStart, swallowtailCutDepth, swallowtailPointVerticals, tailControl);
 }
 </script>
 <style type="text/css">
@@ -94,10 +82,6 @@ I decided to make my own.
 
         <label for="swallowtailPointStart">swallowtail start ratio</label>
         <input type="text" name="swallowtailPointStart" id="swallowtailPointStartId" value="0.5" />
-        <br/>
-
-        <label for="swallowtailCutDepth">swallowtail cut depth ratio</label>
-        <input text="text" name="swallowtailCutDepth" id="swallowtailCutDepthId" value="1.0" />
         <br/>
 
         <label for="swallowtailPointVerticals">swallowtail point vertical ratio csv</label>
