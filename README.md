@@ -17,5 +17,6 @@ Things To Do:
 * Change from using font glyphs to SVGs for charges. This will allow more accurate placement.
 * Smarter color choice when color charges on stripes.
 * Multiple charges.
+* Aspect ratio and swallow tail changes, require a page reload.
 
 Available on github at https://github.com/jonathankoren/markovflags .
