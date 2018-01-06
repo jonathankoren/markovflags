@@ -18,7 +18,26 @@ function makeRandomFlag() {
     var ctx = canvasEle.getContext("2d");
     ctx.clearRect(0, 0, canvasEle.width, canvasEle.height);
 
-    renderFlag(canvasEle, makeRandomFlagConfig());
+    renderFlag(canvasEle, setConfig(makeRandomFlagConfig()));
+}
+
+function setConfig(flagConfig) {
+    document.getElementById("aspectRatioId").value = flagConfig.dimensions.aspectRatio;
+    document.getElementById("aspectRatioId").value = flagConfig.dimensions.aspectRatio;
+
+    document.getElementById("swallowtailPointStartId").value = flagConfig.swallowtails.start;
+    document.getElementById("swallowtailPointVerticalsId").value = flagConfig.swallowtails.points;
+    document.getElementById("tailControlId").value = flagConfig.swallowtails.controls;
+
+    document.getElementById("stripeOrientId").value = flagConfig.stripes.orient;
+    document.getElementById("stripeWidthCsvId").value = flagConfig.stripes.points;
+    document.getElementById("stripeColorCsvId").value = flagConfig.stripes.colors;
+
+    document.getElementById("cantonModeId").value = flagConfig.canton.mode;
+    document.getElementById("cantonColorId").value = flagConfig.canton.color;
+    document.getElementById("chargeId").value = flagConfig.charge;
+
+    return flagConfig;
 }
 
 function makeConfig() {
@@ -62,7 +81,9 @@ function makeConfig() {
         canton: {
             mode: document.getElementById("cantonModeId").value,
             color: document.getElementById("cantonColorId").value,
-        }
+        },
+
+        charge: document.getElementById("chargeId").value,
     }
 }
 </script>
@@ -78,14 +99,28 @@ Being inspired from the flag generator on
 <a href="http://www.learnedleague.com/">Learned League</a>, and
 <a href="http://politiscales.la-commune.net/en_US/quiz/">PolitiScacles</a>,
 I decided to make my own.
+
+Flags are generated from a markov model that chooses, the number and
+orientation of stripes, canton presence (and shape), and colors. Model were
+derived from examining world flags. If the flag will be charged, the choice
+of charge is uniformally random.
+
+Things To Do:
+<ul>
+    <li>Ordinary crossess, saltires, and scandinavian crosses.</li>
+    <li>Change from using font glyphs to SVGs for charges.</li>
+    <li>Smarter color choice when color charges on stripes.</li>
+    <li>Multiple charges.</li>
+</ul>
+
 <canvas id="flag" height="500" width="1000">
   Your browser needs to support canvas for this to work!
 </canvas>
 
-<button type="button" onclick="makeRandomFlag();">Random Flag</button>
-
 
 <form id="debugForm">
+    <button type="button" onclick="makeRandomFlag();">Random Flag</button>
+
     <fieldset>
         <legend>Shape</legend>
         <label for="aspectRatio">aspect ratio</label>
@@ -140,8 +175,45 @@ I decided to make my own.
         <br/>
     </fieldset>
 
+    <label for="charge">Charge</label>
+    <select name="charge" id="chargeId">
+        <option value="">NONE</option>
+        <option value="☀">☀ sun</option>
+        <option value="⎈">⎈ six-pointed star</option>
+        <option value="⬤">⬤ circle</option>
+        <option value="★">★ five-pointed star</option>
+        <option value="☗">☗ shogi piece</option>
+        <option value="☽︎">☽︎ moon</option>
+        <option value="☠">☠ skull and crossbones</option>
+        <option value="☭">☭ hammer and sickle</option>
+        <option value="☯">☯ yin-yang</option>
+        <option value="☬">☬ kkhanda</option>
+        <option value="☫">farsi symbol</option>
+        <option value="☨">☨ cross of lorraine</option>
+        <option value="☩">☩ cross of jerusalem</option>
+        <option value="♚">♚ king</option>
+        <option value="♛">♛ queen</option>
+        <option value="♜">♜ rook</option>
+        <option value="♞">♞ knight</option>
+        <option value="⚒">⚒ hammer and pick</option>
+        <option value="⚓">⚓ anchor</option>
+        <option value="⚔">⚔ crossed swords</option>
+        <option value="⚙">⚙ gear</option>
+        <option value="⚛">⚛ atom</option>
+        <option value="⚜">⚜ fleur de lis</option>
+        <option value="⚡">⚡ lightning</option>
+        <option value="✠">✠ maltese cross</option>
+        <option value="✡">✡ star of david</option>
+        <option value="✝">✝ latin cross</option>
+        <option value="✬">✬ textured star</option>
+        <option value="✯">✯ pinwheel star</option>
+        <option value="✸">✸ eight-pointed star</option>
+        <option value="❄">❄ snowflake</option>
+        <option value="❧">❧ right fleuron</option>
+        <option value="❦">❦ down fleuron</option>
+    </select>
 
-    <button type="button" onclick="updateFlag();">redraw</button>
+    <br><button type="button" onclick="updateFlag();">redraw</button>
 </form>
 </body>
 </html>

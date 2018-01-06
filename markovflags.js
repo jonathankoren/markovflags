@@ -50,6 +50,8 @@ COLORS = {
 }
 */
 
+
+
 function choose(weightedVals) {
     var sum = 0.0;
     for (var k in weightedVals) {
@@ -293,161 +295,68 @@ function makeRandomFlagConfig() {
         }
     };
 
-    var COLOR_MODEL = [{
-        "START": {
-            "black": 15,
-            "blue": 65,
-            "brown": 1,
-            "green": 54,
-            "orange": 4,
-            "purple": 1,
-            "red": 104,
-            "white": 27,
-            "yellow": 14
-        },
-        "black": {
-            "blue": 3,
-            "brown": 1,
-            "green": 8,
-            "orange": 1,
-            "purple": 1,
-            "red": 9,
-            "white": 7,
-            "yellow": 7
-        },
-        "blue": {
-            "black": 9,
-            "brown": 1,
-            "green": 6,
-            "orange": 1,
-            "purple": 1,
-            "red": 28,
-            "white": 25,
-            "yellow": 22
-        },
-        "brown": {
-            "black": 1,
-            "blue": 2,
-            "green": 1,
-            "orange": 1,
-            "purple": 1,
-            "red": 1,
-            "white": 1,
-            "yellow": 1
-        },
-        "green": {
-            "black": 6,
-            "blue": 3,
-            "brown": 1,
-            "orange": 1,
-            "purple": 1,
-            "red": 15,
-            "white": 23,
-            "yellow": 16
-        },
-        "orange": {
-            "black": 1,
-            "blue": 1,
-            "brown": 1,
-            "green": 2,
-            "purple": 1,
-            "red": 1,
-            "white": 4,
-            "yellow": 1
-        },
-        "purple": {
-            'black': 1,
-            'blue': 1,
-            'brown': 1,
-            'green': 1,
-            'orange': 1,
-            'red': 1,
-            'white': 1,
-            'yellow': 1
-        },
-        "red": {
-            "black": 16,
-            "blue": 35,
-            "brown": 1,
-            "green": 17,
-            "orange": 1,
-            "purple": 1,
-            "white": 59,
-            "yellow": 16,
-        },
-        "white": {
-            "black": 7,
-            "blue": 24,
-            "brown": 1,
-            "green": 17,
-            "orange": 2,
-            "purple": 1,
-            "red": 59,
-            "white": 1,
-            "yellow": 1
-        },
-        "yellow": {
-            "black": 1,
-            "blue": 8,
-            "brown": 2,
-            "green": 14,
-            "orange": 2,
-            "purple": 2,
-            "red": 19,
-            "white": 5,
-        },
-    },
-    {
-        "START": {
+    var COLOR_MODEL = [
+        {
+            "START": {
+                "black": 15,
+                "blue": 65,
+                "brown": 1,
+                "green": 54,
+                "orange": 4,
+                "purple": 1,
+                "red": 104,
+                "white": 27,
+                "yellow": 14
+            },
             "black": {
-                'blue': 1,
-                'brown': 1,
-                'green': 2,
-                'orange': 2,
-                'purple': 1,
-                'red': 5,
-                'white': 6,
-                'yellow': 4,
+                "blue": 3,
+                "brown": 1,
+                "green": 8,
+                "orange": 1,
+                "purple": 1,
+                "red": 9,
+                "white": 7,
+                "yellow": 7
             },
             "blue": {
-                'black': 8,
-                'brown': 1,
-                'green': 3,
-                'orange': 1,
-                'purple': 1,
-                'red': 15,
-                'white': 16,
-                'yellow': 19,
+                "black": 9,
+                "brown": 1,
+                "green": 6,
+                "orange": 1,
+                "purple": 1,
+                "red": 28,
+                "white": 25,
+                "yellow": 22
             },
             "brown": {
-                'black': 1,
-                'blue': 1,
-                'green': 1,
-                'orange': 1,
-                'purple': 1,
-                'red': 1,
-                'white': 1,
-                'yellow': 1
+                "black": 1,
+                "blue": 2,
+                "green": 1,
+                "orange": 1,
+                "purple": 1,
+                "red": 1,
+                "white": 1,
+                "yellow": 1
             },
             "green": {
-                'black': 5,
-                'blue': 2,
-                'brown': 1,
-                'orange': 1,
-                'purple': 1,
-                'red': 7,
-                'white': 18,
-                'yellow': 14,
+                "black": 6,
+                "blue": 3,
+                "brown": 1,
+                "orange": 1,
+                "purple": 1,
+                "red": 15,
+                "white": 23,
+                "yellow": 16
             },
             "orange": {
-                'black': 1,
-                'blue': 1,
-                'brown': 1,
-                'green': 1,
-                'purple': 1,
-                'red': 1,
-                'white': 4,
-                'yellow': 1
+                "black": 1,
+                "blue": 1,
+                "brown": 1,
+                "green": 2,
+                "purple": 1,
+                "red": 1,
+                "white": 4,
+                "yellow": 1
             },
             "purple": {
                 'black': 1,
@@ -460,704 +369,798 @@ function makeRandomFlagConfig() {
                 'yellow': 1
             },
             "red": {
-                'black': 12,
-                'blue': 18,
-                'brown': 1,
-                'green': 6,
-                'orange': 1,
-                'purple': 1,
-                'white': 31,
-                'yellow': 11,
+                "black": 16,
+                "blue": 35,
+                "brown": 1,
+                "green": 17,
+                "orange": 1,
+                "purple": 1,
+                "white": 59,
+                "yellow": 16,
             },
             "white": {
-                'black': 1,
-                'blue': 7,
-                'brown': 1,
-                'green': 1,
-                'orange': 1,
-                'purple': 1,
-                'red': 12,
-                'yellow': 1
+                "black": 7,
+                "blue": 24,
+                "brown": 1,
+                "green": 17,
+                "orange": 2,
+                "purple": 1,
+                "red": 59,
+                "white": 1,
+                "yellow": 1
             },
             "yellow": {
-                'black': 1,
-                'blue': 4,
-                'brown': 1,
-                'green': 3,
-                'orange': 2,
-                'purple': 1,
-                'red': 4,
-                'white': 5,
+                "black": 1,
+                "blue": 8,
+                "brown": 2,
+                "green": 14,
+                "orange": 2,
+                "purple": 2,
+                "red": 19,
+                "white": 5,
             },
         },
-        "black": {
-            "blue": {
-                'brown': 1,
-                'green': 1,
-                'orange': 1,
-                'purple': 1,
-                'red': 1,
-                'white': 1,
-                'yellow': 1
+        {
+            "START": {
+                "black": {
+                    'blue': 1,
+                    'brown': 1,
+                    'green': 2,
+                    'orange': 2,
+                    'purple': 1,
+                    'red': 5,
+                    'white': 6,
+                    'yellow': 4,
+                },
+                "blue": {
+                    'black': 8,
+                    'brown': 1,
+                    'green': 3,
+                    'orange': 1,
+                    'purple': 1,
+                    'red': 15,
+                    'white': 16,
+                    'yellow': 19,
+                },
+                "brown": {
+                    'black': 1,
+                    'blue': 1,
+                    'green': 1,
+                    'orange': 1,
+                    'purple': 1,
+                    'red': 1,
+                    'white': 1,
+                    'yellow': 1
+                },
+                "green": {
+                    'black': 5,
+                    'blue': 2,
+                    'brown': 1,
+                    'orange': 1,
+                    'purple': 1,
+                    'red': 7,
+                    'white': 18,
+                    'yellow': 14,
+                },
+                "orange": {
+                    'black': 1,
+                    'blue': 1,
+                    'brown': 1,
+                    'green': 1,
+                    'purple': 1,
+                    'red': 1,
+                    'white': 4,
+                    'yellow': 1
+                },
+                "purple": {
+                    'black': 1,
+                    'blue': 1,
+                    'brown': 1,
+                    'green': 1,
+                    'orange': 1,
+                    'red': 1,
+                    'white': 1,
+                    'yellow': 1
+                },
+                "red": {
+                    'black': 12,
+                    'blue': 18,
+                    'brown': 1,
+                    'green': 6,
+                    'orange': 1,
+                    'purple': 1,
+                    'white': 31,
+                    'yellow': 11,
+                },
+                "white": {
+                    'black': 1,
+                    'blue': 7,
+                    'brown': 1,
+                    'green': 1,
+                    'orange': 1,
+                    'purple': 1,
+                    'red': 12,
+                    'yellow': 1
+                },
+                "yellow": {
+                    'black': 1,
+                    'blue': 4,
+                    'brown': 1,
+                    'green': 3,
+                    'orange': 2,
+                    'purple': 1,
+                    'red': 4,
+                    'white': 5,
+                },
             },
-            "brown": {
-                'blue': 1,
-                'green': 1,
-                'orange': 1,
-                'purple': 1,
-                'red': 1,
-                'white': 1,
-                'yellow': 1
-            },
-            "green": {
-                'blue': 1,
-                'brown': 1,
-                'orange': 1,
-                'purple': 1,
-                'red': 1,
-                'white': 1,
-                'yellow': 1
-            },
-            "orange": {
-                'blue': 1,
-                'brown': 1,
-                'green': 2,
-                'purple': 1,
-                'red': 1,
-                'white': 1,
-                'yellow': 1
-            },
-            "purple": {
-                'blue': 1,
-                'brown': 1,
-                'green': 1,
-                'orange': 1,
-                'red': 1,
-                'white': 1,
-                'yellow': 1
-            },
-            "red": {
-                'blue': 1,
-                'brown': 1,
-                'green': 4,
-                'orange': 1,
-                'purple': 1,
-                'white': 1,
-                'yellow': 3,
-            },
-            "white": {
-                'blue': 1,
-                'brown': 1,
-                'green': 2,
-                'orange': 1,
-                'purple': 1,
-                'red': 5,
-                'yellow': 1
-            },
-            "yellow": {
-                'blue': 2,
-                'brown': 1,
-                'green': 1,
-                'orange': 1,
-                'purple': 1,
-                'red': 5,
-                'white': 1,
-            },
-        },
-        "blue": {
             "black": {
-                'brown': 1,
-                'green': 3,
-                'orange': 1,
-                'purple': 1,
-                'red': 1,
-                'white': 3,
-                'yellow': 1
-            },
-            "brown": {
-                'black': 1,
-                'green': 1,
-                'orange': 1,
-                'purple': 1,
-                'red': 1,
-                'white': 1,
-                'yellow': 1
-            },
-            "green": {
-                'black': 1,
-                'brown': 1,
-                'orange': 1,
-                'purple': 1,
-                'red': 1,
-                'white': 2,
-                'yellow': 1
-            },
-            "orange": {
-                'black': 1,
-                'brown': 1,
-                'green': 1,
-                'purple': 1,
-                'red': 1,
-                'white': 1,
-                'yellow': 1
-            },
-            "purple": {
-                'black': 1,
-                'brown': 1,
-                'green': 1,
-                'orange': 1,
-                'red': 1,
-                'white': 1,
-                'yellow': 1
-            },
-            "red": {
-                'black': 2,
-                'brown': 1,
-                'green': 6,
-                'orange': 1,
-                'purple': 1,
-                'white': 3,
-                'yellow': 1
-            },
-            "white": {
-                'black': 1,
-                'brown': 1,
-                'green': 4,
-                'orange': 1,
-                'purple': 1,
-                'red': 4,
-                'yellow': 1
-            },
-            "yellow": {
-                'black': 1,
-                'brown': 1,
-                'green': 6,
-                'orange': 1,
-                'purple': 1,
-                'red': 5,
-                'yellow': 1
-            }
-        },
-        "brown": {
-            "black": {
-                'blue': 1,
-                'green': 1,
-                'orange': 1,
-                'purple': 1,
-                'red': 1,
-                'white': 1,
-                'yellow': 1
-            },
-            "blue": {
-                'black': 1,
-                'green': 1,
-                'orange': 1,
-                'purple': 1,
-                'red': 1,
-                'white': 1,
-                'yellow': 1
-            },
-            "green": {
-                'black': 1,
-                'blue': 1,
-                'orange': 1,
-                'purple': 1,
-                'red': 1,
-                'white': 1,
-                'yellow': 1
-            },
-            "orange": {
-                'black': 1,
-                'blue': 1,
-                'green': 1,
-                'purple': 1,
-                'red': 1,
-                'white': 1,
-                'yellow': 1
-            },
-            "purple": {
-                'black': 1,
-                'blue': 1,
-                'green': 1,
-                'orange': 1,
-                'red': 1,
-                'white': 1,
-                'yellow': 1
-            },
-            "red": {
-                'black': 1,
-                'blue': 1,
-                'green': 1,
-                'orange': 1,
-                'purple': 1,
-                'white': 1,
-                'yellow': 1
-            },
-            "white": {
-                'black': 1,
-                'blue': 1,
-                'green': 1,
-                'orange': 1,
-                'purple': 1,
-                'red': 1,
-                'yellow': 1
-            },
-            "yellow": {
-                'black': 1,
-                'blue': 1,
-                'green': 1,
-                'orange': 1,
-                'purple': 1,
-                'red': 1,
-                'white': 1,
-            }
-        },
-        "green": {
-            "black": {
-                'blue': 2,
-                'brown': 1,
-                'orange': 1,
-                'purple': 1,
-                'red': 2,
-                'white': 1,
-                'yellow': 2,
+                "blue": {
+                    'brown': 1,
+                    'green': 1,
+                    'orange': 1,
+                    'purple': 1,
+                    'red': 1,
+                    'white': 1,
+                    'yellow': 1
+                },
+                "brown": {
+                    'blue': 1,
+                    'green': 1,
+                    'orange': 1,
+                    'purple': 1,
+                    'red': 1,
+                    'white': 1,
+                    'yellow': 1
+                },
+                "green": {
+                    'blue': 1,
+                    'brown': 1,
+                    'orange': 1,
+                    'purple': 1,
+                    'red': 1,
+                    'white': 1,
+                    'yellow': 1
+                },
+                "orange": {
+                    'blue': 1,
+                    'brown': 1,
+                    'green': 2,
+                    'purple': 1,
+                    'red': 1,
+                    'white': 1,
+                    'yellow': 1
+                },
+                "purple": {
+                    'blue': 1,
+                    'brown': 1,
+                    'green': 1,
+                    'orange': 1,
+                    'red': 1,
+                    'white': 1,
+                    'yellow': 1
+                },
+                "red": {
+                    'blue': 1,
+                    'brown': 1,
+                    'green': 4,
+                    'orange': 1,
+                    'purple': 1,
+                    'white': 1,
+                    'yellow': 3,
+                },
+                "white": {
+                    'blue': 1,
+                    'brown': 1,
+                    'green': 2,
+                    'orange': 1,
+                    'purple': 1,
+                    'red': 5,
+                    'yellow': 1
+                },
+                "yellow": {
+                    'blue': 2,
+                    'brown': 1,
+                    'green': 1,
+                    'orange': 1,
+                    'purple': 1,
+                    'red': 5,
+                    'white': 1,
+                },
             },
             "blue": {
-                'black': 1,
-                'brown': 1,
-                'orange': 1,
-                'purple': 1,
-                'red': 2,
-                'white': 1,
-                'yellow': 1
+                "black": {
+                    'brown': 1,
+                    'green': 3,
+                    'orange': 1,
+                    'purple': 1,
+                    'red': 1,
+                    'white': 3,
+                    'yellow': 1
+                },
+                "brown": {
+                    'black': 1,
+                    'green': 1,
+                    'orange': 1,
+                    'purple': 1,
+                    'red': 1,
+                    'white': 1,
+                    'yellow': 1
+                },
+                "green": {
+                    'black': 1,
+                    'brown': 1,
+                    'orange': 1,
+                    'purple': 1,
+                    'red': 1,
+                    'white': 2,
+                    'yellow': 1
+                },
+                "orange": {
+                    'black': 1,
+                    'brown': 1,
+                    'green': 1,
+                    'purple': 1,
+                    'red': 1,
+                    'white': 1,
+                    'yellow': 1
+                },
+                "purple": {
+                    'black': 1,
+                    'brown': 1,
+                    'green': 1,
+                    'orange': 1,
+                    'red': 1,
+                    'white': 1,
+                    'yellow': 1
+                },
+                "red": {
+                    'black': 2,
+                    'brown': 1,
+                    'green': 6,
+                    'orange': 1,
+                    'purple': 1,
+                    'white': 3,
+                    'yellow': 1
+                },
+                "white": {
+                    'black': 1,
+                    'brown': 1,
+                    'green': 4,
+                    'orange': 1,
+                    'purple': 1,
+                    'red': 4,
+                    'yellow': 1
+                },
+                "yellow": {
+                    'black': 1,
+                    'brown': 1,
+                    'green': 6,
+                    'orange': 1,
+                    'purple': 1,
+                    'red': 5,
+                    'yellow': 1
+                }
             },
             "brown": {
-                'black': 1,
-                'blue': 1,
-                'orange': 1,
-                'purple': 1,
-                'red': 1,
-                'white': 1,
-                'yellow': 1
-            },
-            "orange": {
-                'black': 1,
-                'blue': 1,
-                'brown': 1,
-                'purple': 1,
-                'red': 1,
-                'white': 1,
-                'yellow': 1
-            },
-            "purple": {
-                'black': 1,
-                'blue': 1,
-                'brown': 1,
-                'orange': 1,
-                'red': 1,
-                'white': 1,
-                'yellow': 1
-            },
-            "red": {
-                'black': 1,
-                'blue': 1,
-                'brown': 1,
-                'orange': 1,
-                'purple': 1,
-                'white': 1,
-                'yellow': 3,
-            },
-            "white": {
-                'black': 3,
-                'blue': 2,
-                'brown': 1,
-                'orange': 2,
-                'purple': 1,
-                'red': 8,
-                'yellow': 1
-            },
-            "yellow": {
-                'black': 1,
-                'blue': 2,
-                'brown': 2,
-                'orange': 1,
-                'purple': 1,
-                'red': 7,
-                'white': 1,
-            }
-        },
-        "orange": {
-            "black": {
-                'blue': 1,
-                'brown': 1,
-                'green': 1,
-                'purple': 1,
-                'red': 1,
-                'white': 1,
-                'yellow': 1
-            },
-            "blue": {
-                'black': 1,
-                'brown': 1,
-                'green': 1,
-                'purple': 1,
-                'red': 1,
-                'white': 1,
-                'yellow': 1
-            },
-            "brown": {
-                'black': 1,
-                'blue': 1,
-                'green': 1,
-                'purple': 1,
-                'red': 1,
-                'white': 1,
-                'yellow': 1
+                "black": {
+                    'blue': 1,
+                    'green': 1,
+                    'orange': 1,
+                    'purple': 1,
+                    'red': 1,
+                    'white': 1,
+                    'yellow': 1
+                },
+                "blue": {
+                    'black': 1,
+                    'green': 1,
+                    'orange': 1,
+                    'purple': 1,
+                    'red': 1,
+                    'white': 1,
+                    'yellow': 1
+                },
+                "green": {
+                    'black': 1,
+                    'blue': 1,
+                    'orange': 1,
+                    'purple': 1,
+                    'red': 1,
+                    'white': 1,
+                    'yellow': 1
+                },
+                "orange": {
+                    'black': 1,
+                    'blue': 1,
+                    'green': 1,
+                    'purple': 1,
+                    'red': 1,
+                    'white': 1,
+                    'yellow': 1
+                },
+                "purple": {
+                    'black': 1,
+                    'blue': 1,
+                    'green': 1,
+                    'orange': 1,
+                    'red': 1,
+                    'white': 1,
+                    'yellow': 1
+                },
+                "red": {
+                    'black': 1,
+                    'blue': 1,
+                    'green': 1,
+                    'orange': 1,
+                    'purple': 1,
+                    'white': 1,
+                    'yellow': 1
+                },
+                "white": {
+                    'black': 1,
+                    'blue': 1,
+                    'green': 1,
+                    'orange': 1,
+                    'purple': 1,
+                    'red': 1,
+                    'yellow': 1
+                },
+                "yellow": {
+                    'black': 1,
+                    'blue': 1,
+                    'green': 1,
+                    'orange': 1,
+                    'purple': 1,
+                    'red': 1,
+                    'white': 1,
+                }
             },
             "green": {
-                'black': 1,
-                'blue': 1,
-                'brown': 1,
-                'purple': 1,
-                'red': 1,
-                'white': 1,
-                'yellow': 1
-            },
-            "purple": {
-                'black': 1,
-                'blue': 1,
-                'brown': 1,
-                'green': 1,
-                'red': 1,
-                'white': 1,
-                'yellow': 1
-            },
-            "red": {
-                'black': 1,
-                'blue': 1,
-                'brown': 1,
-                'green': 1,
-                'purple': 1,
-                'white': 1,
-                'yellow': 1
-            },
-            "white": {
-                'black': 1,
-                'blue': 1,
-                'brown': 1,
-                'green': 4,
-                'purple': 1,
-                'red': 1,
-                'yellow': 1
-            },
-            "yellow": {
-                'black': 1,
-                'blue': 1,
-                'brown': 1,
-                'green': 1,
-                'purple': 1,
-                'red': 1,
-                'white': 1,
-            }
-        },
-        "purple": {
-            'black': {
-                'blue': 1,
-                'brown': 1,
-                'green': 1,
-                'orange': 1,
-                'red': 1,
-                'white': 1,
-                'yellow': 1
-            },
-            'blue': {
-                'black': 1,
-                'brown': 1,
-                'green': 1,
-                'orange': 1,
-                'red': 1,
-                'white': 1,
-                'yellow': 1
-            },
-            'brown': {
-                'black': 1,
-                'blue': 1,
-                'green': 1,
-                'orange': 1,
-                'red': 1,
-                'white': 1,
-                'yellow': 1
-            },
-            'green': {
-                'black': 1,
-                'blue': 1,
-                'brown': 1,
-                'orange': 1,
-                'red': 1,
-                'white': 1,
-                'yellow': 1
-            },
-            'orange': {
-                'black': 1,
-                'blue': 1,
-                'brown': 1,
-                'green': 1,
-                'red': 1,
-                'white': 1,
-                'yellow': 1
-            },
-            'red': {
-                'black': 1,
-                'blue': 1,
-                'brown': 1,
-                'green': 1,
-                'orange': 1,
-                'white': 1,
-                'yellow': 1
-            },
-            'white': {
-                'black': 1,
-                'blue': 1,
-                'brown': 1,
-                'green': 1,
-                'orange': 1,
-                'red': 1,
-                'yellow': 1
-            },
-            'yellow': {
-                'black': 1,
-                'blue': 1,
-                'brown': 1,
-                'green': 1,
-                'orange': 1,
-                'red': 1,
-                'white': 1,
-            },
-        },
-        "red": {
-            "black": {
-                'blue': 1,
-                'brown': 1,
-                'green': 3,
-                'orange': 1,
-                'purple': 1,
-                'white': 1,
-                'yellow': 2,
-            },
-            "blue": {
-                'black': 1,
-                'brown': 1,
-                'green': 3,
-                'orange': 1,
-                'purple': 1,
-                'white': 3,
-                'yellow': 5,
-            },
-            "brown": {
-                'black': 1,
-                'blue': 1,
-                'green': 1,
-                'orange': 1,
-                'purple': 1,
-                'white': 1,
-                'yellow': 1
-            },
-            "green": {
-                'black': 1,
-                'blue': 2,
-                'brown': 1,
-                'orange': 1,
-                'purple': 1,
-                'white': 2,
-                'yellow': 1
+                "black": {
+                    'blue': 2,
+                    'brown': 1,
+                    'orange': 1,
+                    'purple': 1,
+                    'red': 2,
+                    'white': 1,
+                    'yellow': 2,
+                },
+                "blue": {
+                    'black': 1,
+                    'brown': 1,
+                    'orange': 1,
+                    'purple': 1,
+                    'red': 2,
+                    'white': 1,
+                    'yellow': 1
+                },
+                "brown": {
+                    'black': 1,
+                    'blue': 1,
+                    'orange': 1,
+                    'purple': 1,
+                    'red': 1,
+                    'white': 1,
+                    'yellow': 1
+                },
+                "orange": {
+                    'black': 1,
+                    'blue': 1,
+                    'brown': 1,
+                    'purple': 1,
+                    'red': 1,
+                    'white': 1,
+                    'yellow': 1
+                },
+                "purple": {
+                    'black': 1,
+                    'blue': 1,
+                    'brown': 1,
+                    'orange': 1,
+                    'red': 1,
+                    'white': 1,
+                    'yellow': 1
+                },
+                "red": {
+                    'black': 1,
+                    'blue': 1,
+                    'brown': 1,
+                    'orange': 1,
+                    'purple': 1,
+                    'white': 1,
+                    'yellow': 3,
+                },
+                "white": {
+                    'black': 3,
+                    'blue': 2,
+                    'brown': 1,
+                    'orange': 2,
+                    'purple': 1,
+                    'red': 8,
+                    'yellow': 1
+                },
+                "yellow": {
+                    'black': 1,
+                    'blue': 2,
+                    'brown': 2,
+                    'orange': 1,
+                    'purple': 1,
+                    'red': 7,
+                    'white': 1,
+                }
             },
             "orange": {
-                'black': 1,
-                'blue': 1,
-                'brown': 1,
-                'green': 1,
-                'purple': 1,
-                'white': 1,
-                'yellow': 1
+                "black": {
+                    'blue': 1,
+                    'brown': 1,
+                    'green': 1,
+                    'purple': 1,
+                    'red': 1,
+                    'white': 1,
+                    'yellow': 1
+                },
+                "blue": {
+                    'black': 1,
+                    'brown': 1,
+                    'green': 1,
+                    'purple': 1,
+                    'red': 1,
+                    'white': 1,
+                    'yellow': 1
+                },
+                "brown": {
+                    'black': 1,
+                    'blue': 1,
+                    'green': 1,
+                    'purple': 1,
+                    'red': 1,
+                    'white': 1,
+                    'yellow': 1
+                },
+                "green": {
+                    'black': 1,
+                    'blue': 1,
+                    'brown': 1,
+                    'purple': 1,
+                    'red': 1,
+                    'white': 1,
+                    'yellow': 1
+                },
+                "purple": {
+                    'black': 1,
+                    'blue': 1,
+                    'brown': 1,
+                    'green': 1,
+                    'red': 1,
+                    'white': 1,
+                    'yellow': 1
+                },
+                "red": {
+                    'black': 1,
+                    'blue': 1,
+                    'brown': 1,
+                    'green': 1,
+                    'purple': 1,
+                    'white': 1,
+                    'yellow': 1
+                },
+                "white": {
+                    'black': 1,
+                    'blue': 1,
+                    'brown': 1,
+                    'green': 4,
+                    'purple': 1,
+                    'red': 1,
+                    'yellow': 1
+                },
+                "yellow": {
+                    'black': 1,
+                    'blue': 1,
+                    'brown': 1,
+                    'green': 1,
+                    'purple': 1,
+                    'red': 1,
+                    'white': 1,
+                }
             },
             "purple": {
-                'black': 1,
-                'blue': 1,
-                'brown': 1,
-                'green': 1,
-                'orange': 1,
-                'white': 1,
-                'yellow': 1
-            },
-            "white": {
-                'black': 4,
-                'blue': 5,
-                'brown': 1,
-                'green': 6,
-                'orange': 1,
-                'purple': 1,
-                'yellow': 1
-            },
-            "yellow": {
-                'black': 1,
-                'blue': 1,
-                'brown': 1,
-                'green': 4,
-                'orange': 1,
-                'purple': 2,
-                'white': 1,
-            }
-        },
-        "white": {
-            "black": {
-                'blue': 1,
-                'brown': 1,
-                'green': 2,
-                'orange': 1,
-                'purple': 1,
-                'red': 2,
-                'yellow': 2,
-            },
-            "blue": {
-                'black': 1,
-                'brown': 1,
-                'green': 2,
-                'orange': 1,
-                'purple': 1,
-                'red': 6,
-                'yellow': 1
-            },
-            "brown": {
-                'black': 1,
-                'blue': 1,
-                'green': 1,
-                'orange': 1,
-                'purple': 1,
-                'red': 1,
-                'yellow': 1
-            },
-            "green": {
-                'black': 2,
-                'blue': 1,
-                'brown': 1,
-                'orange': 1,
-                'purple': 1,
-                'red': 2,
-                'yellow': 2,
-            },
-            "orange": {
-                'black': 1,
-                'blue': 1,
-                'brown': 1,
-                'green': 1,
-                'purple': 1,
-                'red': 1,
-                'yellow': 1
-            },
-            "purple": {
-                'black': 1,
-                'blue': 1,
-                'brown': 1,
-                'green': 1,
-                'orange': 1,
-                'red': 1,
-                'yellow': 1
+                'black': {
+                    'blue': 1,
+                    'brown': 1,
+                    'green': 1,
+                    'orange': 1,
+                    'red': 1,
+                    'white': 1,
+                    'yellow': 1
+                },
+                'blue': {
+                    'black': 1,
+                    'brown': 1,
+                    'green': 1,
+                    'orange': 1,
+                    'red': 1,
+                    'white': 1,
+                    'yellow': 1
+                },
+                'brown': {
+                    'black': 1,
+                    'blue': 1,
+                    'green': 1,
+                    'orange': 1,
+                    'red': 1,
+                    'white': 1,
+                    'yellow': 1
+                },
+                'green': {
+                    'black': 1,
+                    'blue': 1,
+                    'brown': 1,
+                    'orange': 1,
+                    'red': 1,
+                    'white': 1,
+                    'yellow': 1
+                },
+                'orange': {
+                    'black': 1,
+                    'blue': 1,
+                    'brown': 1,
+                    'green': 1,
+                    'red': 1,
+                    'white': 1,
+                    'yellow': 1
+                },
+                'red': {
+                    'black': 1,
+                    'blue': 1,
+                    'brown': 1,
+                    'green': 1,
+                    'orange': 1,
+                    'white': 1,
+                    'yellow': 1
+                },
+                'white': {
+                    'black': 1,
+                    'blue': 1,
+                    'brown': 1,
+                    'green': 1,
+                    'orange': 1,
+                    'red': 1,
+                    'yellow': 1
+                },
+                'yellow': {
+                    'black': 1,
+                    'blue': 1,
+                    'brown': 1,
+                    'green': 1,
+                    'orange': 1,
+                    'red': 1,
+                    'white': 1,
+                },
             },
             "red": {
-                'black': 2,
-                'blue': 12,
-                'brown': 1,
-                'green': 3,
-                'orange': 1,
-                'purple': 1,
-                'yellow': 2,
-            },
-            "yellow": {
-                'black': 1,
-                'blue': 1,
-                'brown': 1,
-                'green': 1,
-                'orange': 1,
-                'purple': 1,
-                'red': 1,
-            }
-        },
-        "yellow": {
-            "black": {
-                'blue': 1,
-                'brown': 1,
-                'green': 1,
-                'orange': 1,
-                'purple': 1,
-                'red': 1,
-                'white': 1,
-            },
-            "blue": {
-                'black': 2,
-                'brown': 1,
-                'green': 1,
-                'orange': 1,
-                'purple': 1,
-                'red': 4,
-                'white': 1,
-            },
-            "brown": {
-                'black': 1,
-                'blue': 2,
-                'green': 1,
-                'orange': 1,
-                'purple': 1,
-                'red': 1,
-                'white': 1,
-            },
-            "green": {
-                'black': 1,
-                'blue': 1,
-                'brown': 1,
-                'orange': 1,
-                'purple': 1,
-                'red': 5,
-                'white': 2,
-            },
-            "orange": {
-                'black': 1,
-                'blue': 1,
-                'brown': 1,
-                'green': 1,
-                'purple': 1,
-                'red': 1,
-                'white': 1,
-            },
-            "purple": {
-                'black': 1,
-                'blue': 1,
-                'brown': 1,
-                'green': 1,
-                'orange': 1,
-                'red': 1,
-                'white': 1,
-            },
-            "red": {
-                'black': 3,
-                'blue': 1,
-                'brown': 1,
-                'green': 2,
-                'orange': 1,
-                'purple': 1,
-                'white': 3,
+                "black": {
+                    'blue': 1,
+                    'brown': 1,
+                    'green': 3,
+                    'orange': 1,
+                    'purple': 1,
+                    'white': 1,
+                    'yellow': 2,
+                },
+                "blue": {
+                    'black': 1,
+                    'brown': 1,
+                    'green': 3,
+                    'orange': 1,
+                    'purple': 1,
+                    'white': 3,
+                    'yellow': 5,
+                },
+                "brown": {
+                    'black': 1,
+                    'blue': 1,
+                    'green': 1,
+                    'orange': 1,
+                    'purple': 1,
+                    'white': 1,
+                    'yellow': 1
+                },
+                "green": {
+                    'black': 1,
+                    'blue': 2,
+                    'brown': 1,
+                    'orange': 1,
+                    'purple': 1,
+                    'white': 2,
+                    'yellow': 1
+                },
+                "orange": {
+                    'black': 1,
+                    'blue': 1,
+                    'brown': 1,
+                    'green': 1,
+                    'purple': 1,
+                    'white': 1,
+                    'yellow': 1
+                },
+                "purple": {
+                    'black': 1,
+                    'blue': 1,
+                    'brown': 1,
+                    'green': 1,
+                    'orange': 1,
+                    'white': 1,
+                    'yellow': 1
+                },
+                "white": {
+                    'black': 4,
+                    'blue': 5,
+                    'brown': 1,
+                    'green': 6,
+                    'orange': 1,
+                    'purple': 1,
+                    'yellow': 1
+                },
+                "yellow": {
+                    'black': 1,
+                    'blue': 1,
+                    'brown': 1,
+                    'green': 4,
+                    'orange': 1,
+                    'purple': 2,
+                    'white': 1,
+                }
             },
             "white": {
-                'black': 2,
-                'blue': 2,
-                'brown': 1,
-                'green': 1,
-                'orange': 1,
-                'purple': 1,
-                'red': 2,
+                "black": {
+                    'blue': 1,
+                    'brown': 1,
+                    'green': 2,
+                    'orange': 1,
+                    'purple': 1,
+                    'red': 2,
+                    'yellow': 2,
+                },
+                "blue": {
+                    'black': 1,
+                    'brown': 1,
+                    'green': 2,
+                    'orange': 1,
+                    'purple': 1,
+                    'red': 6,
+                    'yellow': 1
+                },
+                "brown": {
+                    'black': 1,
+                    'blue': 1,
+                    'green': 1,
+                    'orange': 1,
+                    'purple': 1,
+                    'red': 1,
+                    'yellow': 1
+                },
+                "green": {
+                    'black': 2,
+                    'blue': 1,
+                    'brown': 1,
+                    'orange': 1,
+                    'purple': 1,
+                    'red': 2,
+                    'yellow': 2,
+                },
+                "orange": {
+                    'black': 1,
+                    'blue': 1,
+                    'brown': 1,
+                    'green': 1,
+                    'purple': 1,
+                    'red': 1,
+                    'yellow': 1
+                },
+                "purple": {
+                    'black': 1,
+                    'blue': 1,
+                    'brown': 1,
+                    'green': 1,
+                    'orange': 1,
+                    'red': 1,
+                    'yellow': 1
+                },
+                "red": {
+                    'black': 2,
+                    'blue': 12,
+                    'brown': 1,
+                    'green': 3,
+                    'orange': 1,
+                    'purple': 1,
+                    'yellow': 2,
+                },
+                "yellow": {
+                    'black': 1,
+                    'blue': 1,
+                    'brown': 1,
+                    'green': 1,
+                    'orange': 1,
+                    'purple': 1,
+                    'red': 1,
+                }
+            },
+            "yellow": {
+                "black": {
+                    'blue': 1,
+                    'brown': 1,
+                    'green': 1,
+                    'orange': 1,
+                    'purple': 1,
+                    'red': 1,
+                    'white': 1,
+                },
+                "blue": {
+                    'black': 2,
+                    'brown': 1,
+                    'green': 1,
+                    'orange': 1,
+                    'purple': 1,
+                    'red': 4,
+                    'white': 1,
+                },
+                "brown": {
+                    'black': 1,
+                    'blue': 2,
+                    'green': 1,
+                    'orange': 1,
+                    'purple': 1,
+                    'red': 1,
+                    'white': 1,
+                },
+                "green": {
+                    'black': 1,
+                    'blue': 1,
+                    'brown': 1,
+                    'orange': 1,
+                    'purple': 1,
+                    'red': 5,
+                    'white': 2,
+                },
+                "orange": {
+                    'black': 1,
+                    'blue': 1,
+                    'brown': 1,
+                    'green': 1,
+                    'purple': 1,
+                    'red': 1,
+                    'white': 1,
+                },
+                "purple": {
+                    'black': 1,
+                    'blue': 1,
+                    'brown': 1,
+                    'green': 1,
+                    'orange': 1,
+                    'red': 1,
+                    'white': 1,
+                },
+                "red": {
+                    'black': 3,
+                    'blue': 1,
+                    'brown': 1,
+                    'green': 2,
+                    'orange': 1,
+                    'purple': 1,
+                    'white': 3,
+                },
+                "white": {
+                    'black': 2,
+                    'blue': 2,
+                    'brown': 1,
+                    'green': 1,
+                    'orange': 1,
+                    'purple': 1,
+                    'red': 2,
+                }
             }
         }
-    }];
-
+    ];
 
     var orientation = choose(SHAPE_MODEL["START"]);
     var stripesPointsKey = choose(SHAPE_MODEL[orientation]);
@@ -1225,6 +1228,50 @@ function makeRandomFlagConfig() {
         stripeColors.push(colors[colorPattern[i]]);
     }
 
+
+    var chargeIcon = choose({
+        "☀": 1,
+        "⎈": 1,
+        "⬤": 1,
+        "★": 1,
+        "☗": 1,
+        "☽︎": 1,
+        "☠": 1,
+        "☭": 1,
+        "☯": 1,
+        "☬": 1,
+        "☫": 1,
+        "☨": 1,
+        "☩": 1,
+        "♚": 1,
+        "♛": 1,
+        "♜": 1,
+        "♞": 1,
+        "⚒": 1,
+        "⚓": 1,
+        "⚔": 1,
+        "⚙": 1,
+        "⚛": 1,
+        "⚜": 1,
+        "⚡": 1,
+        "✠": 1,
+        "✡": 1,
+        "✝": 1,
+        "✬": 1,
+        "✯": 1,
+        "✲": 1,
+        "✵": 1,
+        "✸": 1,
+        "❄": 1,
+        "❧": 1,
+        "❦": 1
+    });
+    if (stripesPoints.length > 1) {
+        if (Math.random() > 0.7) {
+            chargeIcon = "";
+        }
+    }
+
     return {
         dimensions: {
             heightRatio: 0.9,
@@ -1243,7 +1290,9 @@ function makeRandomFlagConfig() {
         canton: {
             mode: cantonMode,
             color: cantonColor,
-        }
+        },
+
+        charge: chargeIcon
     }
 }
 
@@ -1252,7 +1301,10 @@ function renderFlag(ele, flagConfig) {
     var outsidePoints = clipFlagOutline(ele, flagConfig);
 
     drawStripes(ele, flagConfig);
-    drawCanton(ele, flagConfig);
+    var cantonShape = drawCanton(ele, flagConfig);
+    if (flagConfig.charge != "") {
+        drawCharge(ele, flagConfig, cantonShape);
+    }
 
     // draw outline
     drawPolygon(ele, outsidePoints, "1", "black", null);
@@ -1609,6 +1661,73 @@ function drawCanton(ele, flagConfig) {
     drawPolygon(ele, points, "0", flagConfig.canton.color, flagConfig.canton.color);
 
     return points;
+}
+
+function drawCharge(ele, flagConfig, cantonShape) {
+    var ret = getBoundingBox(ele, flagConfig);
+    var originX = ret[0];
+    var originY = ret[1];
+    var width = ret[2];
+    var height = ret[3];
+
+    var icon = flagConfig.charge;
+
+    var ctx =  ele.getContext("2d");
+
+    ctx.textAlign = "center";
+
+    var blazonX;
+    var blazonY;
+    var blazonHeight
+    if (flagConfig.canton.mode == "none") {
+        blazonHeight = (height / 2.0);
+        blazonX = originX + (width / 2.0);
+        blazonY = originY + (height * 0.65);
+    } else if (cantonShape.length == 4) {
+        var cantonWidth  = cantonShape[1][0] - cantonShape[0][0];
+        var cantonHeight = cantonShape[3][1] - cantonShape[0][1];
+        blazonHeight = cantonHeight / 2.0;
+        blazonX = originX + (cantonWidth / 2.0);
+        blazonY = originY + (cantonHeight / 2.0);
+    } else if (cantonShape.length == 3) {
+        var cantonHeight = cantonShape[2][1] - cantonShape[0][1];
+        blazonX = originX + (0.15 * width);
+        blazonY = originY + (cantonHeight * 0.60);
+        ctx.font = (height / 2.0) + "px Arial";
+    }
+
+
+    ctx.fillStyle = "white";
+    if (flagConfig.canton.mode != "none") {
+        if ((flagConfig.canton.color == "white") ||
+            (flagConfig.canton.color == "yellow")) {
+            ctx.fillStyle = "black";
+        }
+    } else {
+
+
+        var checkPoints = [
+            [ blazonX - blazonHeight, blazonY - blazonHeight ],
+            [ blazonX - blazonHeight, blazonY + blazonHeight ],
+            [ blazonX + blazonHeight, blazonY - blazonHeight ],
+            [ blazonX + blazonHeight, blazonY + blazonHeight ]
+        ];
+
+
+        for (var i = 0; i < flagConfig.stripes.colors.length; i++) {
+            var color = flagConfig.stripes.colors[i];
+            if ((color == "white") ||
+                (color == "yellow")) {
+                ctx.fillStyle = "black";
+                break;
+            }
+        }
+    }
+
+    ctx.font = blazonHeight + "px Arial";
+    ctx.fillText(icon, blazonX, blazonY);
+
+    return icon;
 }
 
 function drawPolygon(ele, points, lineWidth, lineColor, fillColor, clip=false) {
