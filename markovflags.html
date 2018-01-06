@@ -93,25 +93,29 @@ function makeConfig() {
     }
 </style>
 </head>
-<body onload="updateFlag();">
+<body onload="makeRandomFlag();">
 <h1>Generate A Flag</h1>
+<p>
 Being inspired from the flag generator on
 <a href="http://www.learnedleague.com/">Learned League</a>, and
 <a href="http://politiscales.la-commune.net/en_US/quiz/">PolitiScacles</a>,
-I decided to make my own.
-
+I decided to make my own. This tool is perfect for role playing, micronations,
+and revolutions.
+</p>
+<p>
 Flags are generated from a markov model that chooses, the number and
 orientation of stripes, canton presence (and shape), and colors. Model were
 derived from examining world flags. If the flag will be charged, the choice
 of charge is uniformally random.
-
-Things To Do:
+</p>
+<h2>Things To Do</h2>
 <ul>
     <li>Ordinary crossess, saltires, and scandinavian crosses.</li>
     <li>Change from using font glyphs to SVGs for charges. This will allow more accurate placement.</li>
     <li>Smarter color choice when color charges on stripes.</li>
     <li>Multiple charges.</li>
-</ul>A
+    <li>Aspect ratio and swallow tail changes, require a page reload.</li>
+</ul>
 
 Available on github at <a href="https://github.com/jonathankoren/markovflags">https://github.com/jonathankoren/markovflags</a>.
 
