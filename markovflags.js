@@ -1549,23 +1549,6 @@ function drawNordicCross(ele, flagConfig) {
     
     stripes = [];
 
-    /*
-     * center of vertical line is 450 of 1250
-     * white vertical line 350 to 550 (200 pts wide)
-     * red vertical line 400 to 500 (100 pts wide)
-     * 
-     * center of horizontal line is 400 of 900
-     * white horizontal line is 350 to 550 (200 pts wide)
-     * red horizontal line is is 400 to 500 (100 pts wide)
-     */
-
-    /*
-    points = [];
-    //points.push([x, y]);
-    drawPolygon(ele, points, "1", flagConfig.stripes.colors[i], flagConfig.stripes.colors[i]);    
-    stripes.push(points);
-    */
-
     // draw background
     backPoints = [ [originX, originY], [originX + width, originY], 
                    [originX + width, originY + height], [originX, originY + height], 
@@ -1573,56 +1556,63 @@ function drawNordicCross(ele, flagConfig) {
     drawPolygon(ele, backPoints, "1", flagConfig.stripes.colors[0], flagConfig.stripes.colors[0]);    
     stripes.push(backPoints);
 
-    ocv1 = 350/1250;
-    ocv2 = 550/1250
+    endX = originX + width;
+    endY = originY + height;
     
-    icv1 = 400/1250;
-    icv2 = 500/1250;
+    och1f = (350/900) * height;
+    och2f = (550/900) * height;
 
-    och1 = 350/900;
-    och2 = 550/900;
+    och1 = originY + och1f;
+    och2 = originY + och2f;
 
-    ich1 = 400/900;
-    ich2 = 500/900;
+    ich1f = (400/900) * height;
+    ich2f = (500/900) * height;
 
-    w = originX + width;
-    h = originY + height;
+    ich1 = originY + ich1f;
+    ich2 = originY + ich2f;
+
+    ocv1 = originX + (och1 - originY);
+    ocv2 = originX + (och2 - originY);
+    icv1 = originX + (ich1 - originY);
+    icv2 = originX + (ich2 - originY);
 
     outerCross = [ 
-        [originX, h * och1],
-        [w * ocv1, h * och1],
-        [w * ocv1, originY],
-        [w * ocv2, originY],
-        [w * ocv2, h * och1],
-        [w, h * och1],
-        [w, h * och2],
+        [originX, och1],
+        [ocv1, och1],
+        [ocv1, originY],
+        [ocv2, originY],
+        [ocv2, och1],
+        [endX, och1],
+        [endX, och2],
 
-        [w * ocv2, h * och2],
-        [w * ocv2, h],
-        [w * ocv1, h],
-        [w * ocv1, h * och2],
-        [originX, h * och2],
-        [originX, h * och1],
+        [ocv2, och2],
+        [ocv2, endY],
+        [ocv1, endY],
+        [ocv1, och2],
+        [originX, och2],
+        [originX, och1],
     ];
+    console.log(outerCross);
     drawPolygon(ele, outerCross, "1", flagConfig.stripes.colors[1], flagConfig.stripes.colors[1]);    
     stripes.push(outerCross);
 
     innerCross = [ 
-        [originX, h * ich1],
-        [w * icv1, h * ich1],
-        [w * icv1, originY],
-        [w * icv2, originY],
-        [w * icv2, h * ich1],
-        [w, h * ich1],
-        [w, h * ich2],
+        [originX, ich1],
+        [icv1, ich1],
+        [icv1, originY],
+        [icv2, originY],
+        [icv2, ich1],
+        [endX, ich1],
+        [endX, ich2],
 
-        [w * icv2, h * ich2],
-        [w * icv2, h],
-        [w * icv1, h],
-        [w * icv1, h * ich2],
-        [originX, h * ich2],
-        [originX, h * ich1],
+        [icv2, ich2],
+        [icv2, endY],
+        [icv1, endY],
+        [icv1, ich2],
+        [originX, ich2],
+        [originX, ich1],
     ];
+    console.log(innerCross);
     drawPolygon(ele, innerCross, "1", flagConfig.stripes.colors[2], flagConfig.stripes.colors[2]);    
     stripes.push(innerCross);
 
@@ -1688,54 +1678,60 @@ function drawCanton(ele, flagConfig) {
         var cantonHeight = height / 2.0;
         var cantonWidth = width / 2.0;
         if (flagConfig.canton.mode == "square") {
-            cantonWidth = height / 2.0;
+            cantonWidth = cantonHeight;
         } else if (flagConfig.canton.mode == "bar") {
             cantonWidth = height / 2.0;
             cantonHeight = height;
         }
 
-        if ((flagConfig.canton.mode == "square") ||
-            (flagConfig.canton.mode == "rectangle")) {
-            // adjust to stripes
-            var bestAbsDelta = 2.0;
-            var bestActualDelta = 0.0;
-            for (var j = 0; j < flagConfig.stripes.points.length; j++) {
-                var point = flagConfig.stripes.points[j];
-                var delta;
-                if (flagConfig.stripes.orient == "vertical") {
-                    delta = point - 0.5;
-                } else {
-                    delta = point - 0.5;
-                }
+        if (flagConfig.stripes.orient == "nordic") {
+            cantonHeight = (350/900) * height;
+            cantonWidth = cantonHeight;
+            flagConfig.canton.mode = "square";
+        } else {
+            if ((flagConfig.canton.mode == "square") ||
+                (flagConfig.canton.mode == "rectangle")) {
+                // adjust to stripes
+                var bestAbsDelta = 2.0;
+                var bestActualDelta = 0.0;
+                for (var j = 0; j < flagConfig.stripes.points.length; j++) {
+                    var point = flagConfig.stripes.points[j];
+                    var delta;
+                    if (flagConfig.stripes.orient == "vertical") {
+                        delta = point - 0.5;
+                    } else {
+                        delta = point - 0.5;
+                    }
 
 
-                if (Math.abs(delta) <= bestAbsDelta) {
-                    if ((Math.abs(delta) == bestAbsDelta) && (delta < 0)) {
-                        bestAbsDelta = Math.abs(delta);
-                        bestActualDelta = delta;
-                    } else if (Math.abs(delta) < bestAbsDelta) {
-                        bestAbsDelta = Math.abs(delta);
-                        bestActualDelta = delta;
+                    if (Math.abs(delta) <= bestAbsDelta) {
+                        if ((Math.abs(delta) == bestAbsDelta) && (delta < 0)) {
+                            bestAbsDelta = Math.abs(delta);
+                            bestActualDelta = delta;
+                        } else if (Math.abs(delta) < bestAbsDelta) {
+                            bestAbsDelta = Math.abs(delta);
+                            bestActualDelta = delta;
+                        }
                     }
                 }
-            }
 
-            if (bestAbsDelta < 0.2) {
-                if (flagConfig.canton.mode == "square") {
-                    if (flagConfig.stripes.orient == "vertical") {
-                        cantonWidth = width * (0.5 + bestActualDelta);
-                        cantonHeight = cantonWidth;
+                if (bestAbsDelta < 0.2) {
+                    if (flagConfig.canton.mode == "square") {
+                        if (flagConfig.stripes.orient == "vertical") {
+                            cantonWidth = width * (0.5 + bestActualDelta);
+                            cantonHeight = cantonWidth;
+                        } else {
+                            cantonHeight = height * (0.5 + bestActualDelta);
+                            cantonWidth = cantonHeight;
+                        }
                     } else {
-                        cantonHeight = height * (0.5 + bestActualDelta);
-                        cantonWidth = cantonHeight;
-                    }
-                } else {
-                    if (flagConfig.stripes.orient == "vertical") {
-                        cantonWidth = width * (0.5 + bestActualDelta);
-                        cantonHeight = height * 0.5;
-                    } else {
-                        cantonHeight = height * (0.5 + bestActualDelta);
-                        cantonWidth = width * 0.5;
+                        if (flagConfig.stripes.orient == "vertical") {
+                            cantonWidth = width * (0.5 + bestActualDelta);
+                            cantonHeight = height * 0.5;
+                        } else {
+                            cantonHeight = height * (0.5 + bestActualDelta);
+                            cantonWidth = width * 0.5;
+                        }
                     }
                 }
             }
@@ -1774,6 +1770,12 @@ function drawCharge(ele, flagConfig, cantonShape) {
         blazonHeight = (height / 2.0);
         blazonX = originX + (width / 2.0);
         blazonY = originY + (height * 0.65);
+        
+        if (flagConfig.stripes.orient == "nordic") {
+            blazonHeight = (100 / 900)  * height;
+            blazonX = originX + (0.5 * height);
+            blazonY = originY + (0.5 * height);
+        }
     } else if (cantonShape.length == 4) {
         var cantonWidth  = cantonShape[1][0] - cantonShape[0][0];
         var cantonHeight = cantonShape[3][1] - cantonShape[0][1];
