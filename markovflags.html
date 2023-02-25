@@ -5,16 +5,29 @@
 <script type="text/javascript" src="markovflags.js"> </script>
 <script type="text/javascript">
 
+function remakeCanvas() {
+    document.getElementById("flag").remove();
+
+    var canvasEle = document.createElement("canvas");
+    canvasEle.setAttribute("id", "flag");
+    canvasEle.setAttribute("height", "500");
+    canvasEle.setAttribute("width", "1000");
+
+    document.getElementById("flagContainer").appendChild(canvasEle);
+    return canvasEle;
+}
+
 function updateFlag() {
-    var canvasEle = document.getElementById("flag")
+    var canvasEle = remakeCanvas();
     var ctx = canvasEle.getContext("2d");
     ctx.clearRect(0, 0, canvasEle.width, canvasEle.height);
+
 
     renderFlag(canvasEle, makeConfig());
 }
 
 function makeRandomFlag() {
-    var canvasEle = document.getElementById("flag")
+    var canvasEle = remakeCanvas();
     var ctx = canvasEle.getContext("2d");
     ctx.clearRect(0, 0, canvasEle.width, canvasEle.height);
 
@@ -114,15 +127,16 @@ of charge is uniformally random.
     <li>Change from using font glyphs to SVGs for charges. This will allow more accurate placement.</li>
     <li>Smarter color choice when color charges on stripes.</li>
     <li>Multiple charges.</li>
-    <li>Aspect ratio and swallow tail changes, require a page reload.</li>
+    <li>Better controls.</li>
 </ul>
 
 Available on github at <a href="https://github.com/jonathankoren/markovflags">https://github.com/jonathankoren/markovflags</a>.
 
-<canvas id="flag" height="500" width="1000">
-  Your browser needs to support canvas for this to work!
-</canvas>
-
+<div id="flagContainer">
+  <canvas id="flag" height="500" width="1000">
+    Your browser needs to support canvas for this to work!
+  </canvas>
+</div>
 
 <form id="debugForm">
     <button type="button" onclick="makeRandomFlag();">Random Flag</button>
