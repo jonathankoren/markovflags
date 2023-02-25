@@ -1414,8 +1414,10 @@ function drawStripes(ele, flagConfig) {
         drawVerticalStripes(ele, flagConfig);
     } else if (flagConfig.stripes.orient == "diagonal") {
         drawDiagonalStripes(ele, flagConfig);
-    } else {
+    } else if (flagConfig.stripes.orient == "horizontal") {
         drawHorizontalStripes(ele, flagConfig);
+    } else if (flagConfig.stripes.orient == "nordic") {
+        drawNordicCross(ele, flagConfig);
     }
 }
 
@@ -1534,6 +1536,95 @@ function drawDiagonalStripes(ele, flagConfig) {
         drawPolygon(ele, points, "1", flagConfig.stripes.colors[i], flagConfig.stripes.colors[i]);
         stripes.push(points);
     }
+
+    return stripes;
+}
+
+function drawNordicCross(ele, flagConfig) {
+    var ret = getBoundingBox(ele, flagConfig);
+    var originX = ret[0];
+    var originY = ret[1];
+    var width = ret[2];
+    var height = ret[3];
+    
+    stripes = [];
+
+    /*
+     * center of vertical line is 450 of 1250
+     * white vertical line 350 to 550 (200 pts wide)
+     * red vertical line 400 to 500 (100 pts wide)
+     * 
+     * center of horizontal line is 400 of 900
+     * white horizontal line is 350 to 550 (200 pts wide)
+     * red horizontal line is is 400 to 500 (100 pts wide)
+     */
+
+    /*
+    points = [];
+    //points.push([x, y]);
+    drawPolygon(ele, points, "1", flagConfig.stripes.colors[i], flagConfig.stripes.colors[i]);    
+    stripes.push(points);
+    */
+
+    // draw background
+    backPoints = [ [originX, originY], [originX + width, originY], 
+                   [originX + width, originY + height], [originX, originY + height], 
+                   [originX, originY] ];
+    drawPolygon(ele, backPoints, "1", flagConfig.stripes.colors[0], flagConfig.stripes.colors[0]);    
+    stripes.push(backPoints);
+
+    ocv1 = 350/1250;
+    ocv2 = 550/1250
+    
+    icv1 = 400/1250;
+    icv2 = 500/1250;
+
+    och1 = 350/900;
+    och2 = 550/900;
+
+    ich1 = 400/900;
+    ich2 = 500/900;
+
+    w = originX + width;
+    h = originY + height;
+
+    outerCross = [ 
+        [originX, h * och1],
+        [w * ocv1, h * och1],
+        [w * ocv1, originY],
+        [w * ocv2, originY],
+        [w * ocv2, h * och1],
+        [w, h * och1],
+        [w, h * och2],
+
+        [w * ocv2, h * och2],
+        [w * ocv2, h],
+        [w * ocv1, h],
+        [w * ocv1, h * och2],
+        [originX, h * och2],
+        [originX, h * och1],
+    ];
+    drawPolygon(ele, outerCross, "1", flagConfig.stripes.colors[1], flagConfig.stripes.colors[1]);    
+    stripes.push(outerCross);
+
+    innerCross = [ 
+        [originX, h * ich1],
+        [w * icv1, h * ich1],
+        [w * icv1, originY],
+        [w * icv2, originY],
+        [w * icv2, h * ich1],
+        [w, h * ich1],
+        [w, h * ich2],
+
+        [w * icv2, h * ich2],
+        [w * icv2, h],
+        [w * icv1, h],
+        [w * icv1, h * ich2],
+        [originX, h * ich2],
+        [originX, h * ich1],
+    ];
+    drawPolygon(ele, innerCross, "1", flagConfig.stripes.colors[2], flagConfig.stripes.colors[2]);    
+    stripes.push(innerCross);
 
     return stripes;
 }
