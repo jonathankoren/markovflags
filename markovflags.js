@@ -50,8 +50,6 @@ COLORS = {
 }
 */
 
-
-
 function choose(weightedVals) {
     var sum = 0.0;
     for (var k in weightedVals) {
@@ -1592,7 +1590,6 @@ function drawNordicCross(ele, flagConfig) {
         [originX, och2],
         [originX, och1],
     ];
-    console.log(outerCross);
     drawPolygon(ele, outerCross, "1", flagConfig.stripes.colors[1], flagConfig.stripes.colors[1]);    
     stripes.push(outerCross);
 
@@ -1612,7 +1609,6 @@ function drawNordicCross(ele, flagConfig) {
         [originX, ich2],
         [originX, ich1],
     ];
-    console.log(innerCross);
     drawPolygon(ele, innerCross, "1", flagConfig.stripes.colors[2], flagConfig.stripes.colors[2]);    
     stripes.push(innerCross);
 
@@ -1772,7 +1768,7 @@ function drawCharge(ele, flagConfig, cantonShape) {
         blazonY = originY + (height * 0.65);
         
         if (flagConfig.stripes.orient == "nordic") {
-            blazonHeight = (100 / 900)  * height;
+            //blazonHeight = (100 / 900)  * height;
             blazonX = originX + (0.5 * height);
             blazonY = originY + (0.5 * height);
         }
