@@ -18,7 +18,6 @@ of charge is uniformally random.
 * `swallow tail stripe control`: CSV of letters. Controls whether a swallowtail should come to a point at the top, bottom, or middle of the band. Number of elments is the number of swallowtails.
 
 # TODO
-* Ordinary crossess, saltires, and scandinavian crosses.
 * Change from using font glyphs to SVGs for charges. This will allow more accurate placement.
 * Smarter color choice when color charges on stripes.
 * Multiple charges.

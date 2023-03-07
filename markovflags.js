@@ -69,7 +69,10 @@ function makeRandomFlagConfig() {
       "START": {
         "horizontal": 168,
         "diagonal": 49,
-        "vertical": 59
+        "vertical": 59,
+        "nordic": 7,
+        "saltire": 6,
+        "greek": 5,
       },
       "horizontal": {
         "[0.0769, 0.1538, 0.2308, 0.3077, 0.3846, 0.4615, 0.5385, 0.6154, 0.6923, 0.7692, 0.8462, 0.9231, 1.0]": 1,
@@ -128,6 +131,20 @@ function makeRandomFlagConfig() {
         "[0.75, 1.0]": 1,
         "[1.0]": 35
       },
+
+      "nordic": {
+        "[0.5, 1.0]": 2,
+        "[0.333, 0.667, 1.0]": 5,
+      },
+      "saltire": {
+        "[0.5, 1.0]": 3,
+        "[0.333, 0.667, 1.0]": 3,
+      },
+      "greek": {
+        "[0.5, 1.0]": 4,
+        "[0.333, 0.667, 1.0]": 1,
+      },
+
       "[0.0769, 0.1538, 0.2308, 0.3077, 0.3846, 0.4615, 0.5385, 0.6154, 0.6923, 0.7692, 0.8462, 0.9231, 1.0]": {
         "rectangle": 5,
         "bar": 1,
@@ -1414,8 +1431,8 @@ function drawStripes(ele, flagConfig) {
         drawDiagonalStripes(ele, flagConfig);
     } else if (flagConfig.stripes.orient == "horizontal") {
         drawHorizontalStripes(ele, flagConfig);
-    } else if (flagConfig.stripes.orient == "nordic") {
-        drawNordicCross(ele, flagConfig);
+    } else {
+        drawCross(ele, flagConfig);
     }
 }
 
@@ -1538,7 +1555,144 @@ function drawDiagonalStripes(ele, flagConfig) {
     return stripes;
 }
 
-function drawNordicCross(ele, flagConfig) {
+function nordicCrossPoints(ele, flagConfig, barWidthStep, nesting) {
+    var ret = getBoundingBox(ele, flagConfig);
+    var originX = ret[0];
+    var originY = ret[1];
+    var width = ret[2];
+    var height = ret[3];
+
+    endX = originX + width;
+    endY = originY + height;
+
+    midX = originX + (width / 2);
+    midY = originY + (height / 2);
+
+    barWidthStep = (barWidthStep / 900) * height;
+
+    offset = nesting * barWidthStep;
+    square = (midY - offset) - originY;
+
+    points = [
+        [originX, midY - offset],
+        [originX + square, midY - offset],
+        [originX + square, originY],
+        [originX + square + (2 * offset), originY],
+        [originX + square + (2 * offset), midY - offset],
+        [endX, midY - offset], 
+        [endX, midY + offset],
+        [originX + square + (2 * offset), midY + offset],
+        [originX + square + (2 * offset), endY],
+        [originX + square, endY],
+        [originX + square, midY + offset],
+        [originX, midY + offset],
+        [originX, midY - offset]
+    ];
+
+    return [[square, square], points];
+}
+
+function greekCrossPoints(ele, flagConfig, barWidthStep, nesting) {
+    var ret = getBoundingBox(ele, flagConfig);
+    var originX = ret[0];
+    var originY = ret[1];
+    var width = ret[2];
+    var height = ret[3];
+
+    endX = originX + width;
+    endY = originY + height;
+
+    midX = originX + (width / 2);
+    midY = originY + (height / 2);
+
+    barWidthStep = (barWidthStep / 900) * height;
+
+    offset = nesting * barWidthStep;
+
+    points = [
+        [originX, midY - offset],
+        [midX - offset, midY - offset],
+        [midX - offset, originY],
+        [midX + offset, originY],
+        [midX + offset, midY - offset],
+        [endX, midY - offset], 
+        [endX, midY + offset],
+        [midX + offset, midY + offset],
+        [midX + offset, endY],
+        [midX - offset, endY],
+        [midX - offset, midY + offset],
+        [originX, midY + offset],
+        [originX, midY - offset]
+    ];
+
+    cantonWidth = (width / 2) - offset;
+    cantonHeight = (height / 2) - offset;
+
+    return [[cantonWidth, cantonHeight], points];
+}
+
+function saltireCrossPoints(ele, flagConfig, barWidthStep, nesting) {
+    var ret = getBoundingBox(ele, flagConfig);
+    var originX = ret[0];
+    var originY = ret[1];
+    var width = ret[2];
+    var height = ret[3];
+
+    endX = originX + width;
+    endY = originY + height;
+
+    midX = originX + (width / 2);
+    midY = originY + (height / 2);
+
+    barWidthStep = (barWidthStep / 900) * height;
+
+    offset = nesting * barWidthStep;
+
+    flagConfig.dimensions.aspectRatio = Number(flagConfig.dimensions.aspectRatio);
+    var slope = height / width;
+
+    theta = Math.atan(slope);
+    spacingX = offset / Math.sin(theta);
+    spacingY = spacingX / Number(flagConfig.dimensions.aspectRatio);
+    beta = (Math.PI / 2) - theta
+    centerAboveMid = offset / Math.sin(beta)
+    centerLeftMid = offset / Math.sin(theta)
+
+    points = [
+        [originX, originY],
+        [originX + spacingX, originY],
+        [midX, midY - centerAboveMid],
+        [endX - spacingX, originY],
+
+        [endX, originY],
+        [endX, originY + spacingY],
+        [midX + centerLeftMid, midY],
+        [endX, endY - spacingY],
+
+        [endX, endY],
+        [endX - spacingX, endY],
+        [midX, midY + centerAboveMid],
+        [originX + spacingX, endY],
+
+        [originX, endY],
+        [originX, endY - spacingY],
+        [midX - centerLeftMid, midY],
+        [originX, originY + spacingY],
+
+        [originX, originY]
+    ];
+
+    canton = [
+        [originX, endY - spacingY],
+        [midX - centerLeftMid, midY],
+        [originX, originY + spacingY],
+        [originX, endY - spacingY]
+    ];
+
+    return [canton, points];
+}
+
+function drawCross(ele, flagConfig) {
     var ret = getBoundingBox(ele, flagConfig);
     var originX = ret[0];
     var originY = ret[1];
@@ -1554,63 +1708,19 @@ function drawNordicCross(ele, flagConfig) {
     drawPolygon(ele, backPoints, "1", flagConfig.stripes.colors[0], flagConfig.stripes.colors[0]);    
     stripes.push(backPoints);
 
-    endX = originX + width;
-    endY = originY + height;
-    
-    och1f = (350/900) * height;
-    och2f = (550/900) * height;
-
-    och1 = originY + och1f;
-    och2 = originY + och2f;
-
-    ich1f = (400/900) * height;
-    ich2f = (500/900) * height;
-
-    ich1 = originY + ich1f;
-    ich2 = originY + ich2f;
-
-    ocv1 = originX + (och1 - originY);
-    ocv2 = originX + (och2 - originY);
-    icv1 = originX + (ich1 - originY);
-    icv2 = originX + (ich2 - originY);
-
-    outerCross = [ 
-        [originX, och1],
-        [ocv1, och1],
-        [ocv1, originY],
-        [ocv2, originY],
-        [ocv2, och1],
-        [endX, och1],
-        [endX, och2],
-
-        [ocv2, och2],
-        [ocv2, endY],
-        [ocv1, endY],
-        [ocv1, och2],
-        [originX, och2],
-        [originX, och1],
-    ];
-    drawPolygon(ele, outerCross, "1", flagConfig.stripes.colors[1], flagConfig.stripes.colors[1]);    
-    stripes.push(outerCross);
-
-    innerCross = [ 
-        [originX, ich1],
-        [icv1, ich1],
-        [icv1, originY],
-        [icv2, originY],
-        [icv2, ich1],
-        [endX, ich1],
-        [endX, ich2],
-
-        [icv2, ich2],
-        [icv2, endY],
-        [icv1, endY],
-        [icv1, ich2],
-        [originX, ich2],
-        [originX, ich1],
-    ];
-    drawPolygon(ele, innerCross, "1", flagConfig.stripes.colors[2], flagConfig.stripes.colors[2]);    
-    stripes.push(innerCross);
+    for (var i = flagConfig.stripes.colors.length - 1; i > 0; i--) {
+        var square;
+        var crossPoints;
+        if (flagConfig.stripes.orient == "nordic") {
+            [square, crossPoints] = nordicCrossPoints(ele, flagConfig, 50, i);
+        } else if (flagConfig.stripes.orient == "saltire") {
+            [square, crossPoints] = saltireCrossPoints(ele, flagConfig, 50, i);
+        } else if (flagConfig.stripes.orient == "greek") {
+            [square, crossPoints] = greekCrossPoints(ele, flagConfig, 50, i);
+        }
+        drawPolygon(ele, crossPoints, "1", flagConfig.stripes.colors[flagConfig.stripes.colors.length - i], flagConfig.stripes.colors[flagConfig.stripes.colors.length - i]);
+        stripes.push(crossPoints);
+    }
 
     return stripes;
 }
@@ -1628,7 +1738,13 @@ function drawCanton(ele, flagConfig) {
 
     var points = [];
 
-    if (flagConfig.canton.mode == "equi triangle") {
+    if ((flagConfig.stripes.orient == "saltire") 
+        && (flagConfig.canton.mode != "none")) {
+        [points, outerCross] = saltireCrossPoints(ele, flagConfig, 50, flagConfig.stripes.colors.length - 1);
+        flagConfig.canton.mode  = "iso triangle";
+    } else if ((flagConfig.canton.mode == "equi triangle") 
+            && (flagConfig.stripes.orient != "nordic")
+            && (flagConfig.stripes.orient != "greek")) {
         var midPointWidthFactor = 0.5 * Math.sqrt(3);
         var midPoint = height * midPointWidthFactor;
 
@@ -1662,15 +1778,17 @@ function drawCanton(ele, flagConfig) {
             [originX, originY],
             [originX + midPoint, originY + (height / 2.0)],
             [originX, originY + height],
-        ];
-
-    } else if (flagConfig.canton.mode == "iso triangle") {
+        ];        
+    } else if ((flagConfig.canton.mode == "iso triangle")
+               && (flagConfig.stripes.orient != "nordic")
+               && (flagConfig.stripes.orient != "greek")) {
         points = [
             [originX, originY],
             [originX + width, originY + (height / 2.0)],
             [originX, originY + height],
         ];
-    } else {
+    } else { // bar, rectangle, square
+        // default rectangle
         var cantonHeight = height / 2.0;
         var cantonWidth = width / 2.0;
         if (flagConfig.canton.mode == "square") {
@@ -1681,9 +1799,13 @@ function drawCanton(ele, flagConfig) {
         }
 
         if (flagConfig.stripes.orient == "nordic") {
-            cantonHeight = (350/900) * height;
+            [square, outerCross] = nordicCrossPoints(ele, flagConfig, 50, flagConfig.stripes.colors.length - 1);
+            cantonHeight = square[0];
             cantonWidth = cantonHeight;
             flagConfig.canton.mode = "square";
+        } else if (flagConfig.stripes.orient == "greek") {
+            [[cantonWidth, cantonHeight], outerCross] = greekCrossPoints(ele, flagConfig, 50, flagConfig.stripes.colors.length - 1);
+            flagConfig.canton.mode = "rectangle";
         } else {
             if ((flagConfig.canton.mode == "square") ||
                 (flagConfig.canton.mode == "rectangle")) {
@@ -1768,7 +1890,6 @@ function drawCharge(ele, flagConfig, cantonShape) {
         blazonY = originY + (height * 0.65);
         
         if (flagConfig.stripes.orient == "nordic") {
-            //blazonHeight = (100 / 900)  * height;
             blazonX = originX + (0.5 * height);
             blazonY = originY + (0.5 * height);
         }
